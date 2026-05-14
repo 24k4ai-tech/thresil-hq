@@ -233,6 +233,13 @@ function loadConfig() {
   el.drawAddress.value = currentConfig.draw || "";
 }
 
+function configuredAddress(key, value) {
+  const cleaned = cleanAddress(value);
+  if (isAddress(cleaned)) return cleaned;
+  const fallback = currentConfig[key] || DEFAULT_CONFIG[key];
+  return isAddress(fallback) ? fallback : "";
+}
+
 function saveConfig() {
   currentConfig = {
     launcher: cleanAddress(el.launcherAddress.value),
@@ -333,11 +340,12 @@ function onVisibilityRefresh() {
 }
 
 async function refresh() {
-  const launcherAddress = cleanAddress(el.launcherAddress.value);
+  const launcherAddress = configuredAddress("launcher", el.launcherAddress.value);
   if (!isAddress(launcherAddress)) {
     setPendingState();
     return;
   }
+  if (!isAddress(el.launcherAddress.value)) el.launcherAddress.value = launcherAddress;
 
   const provider = await getReadProvider();
   readBlock = BigInt(await provider.getBlockNumber());
@@ -565,14 +573,14 @@ function syncDrawInputsFromSlider() {
   el.drawPercentValue.textContent = `${percent.toFixed(1)}%`;
   const amount = percentToAmount(myTokenBalanceRaw, percent);
   if (document.activeElement !== el.drawAmount) {
-    el.drawAmount.value = amount ? formatToken(amount, 4) : "0";
+    el.drawAmount.value = amount ? formatInputToken(amount, 4) : "0";
   }
   el.drawAmountPreview.textContent = amount ? `${formatToken(amount)} ${tokenSymbol}` : `0 ${tokenSymbol}`;
 }
 
 async function getLpContext(provider) {
-  const launcherAddress = cleanAddress(el.launcherAddress.value);
-  const tokenAddress = cleanAddress(el.tokenAddress.value);
+  const launcherAddress = configuredAddress("launcher", el.launcherAddress.value);
+  const tokenAddress = configuredAddress("token", el.tokenAddress.value);
   if (!isAddress(launcherAddress) || !isAddress(tokenAddress)) throw new Error("Set launcher and token first.");
 
   const launcher = new ethers.Contract(launcherAddress, LAUNCHER_ABI, provider);
@@ -725,7 +733,7 @@ async function addOfficialLp() {
   if (ethAmount <= 0n) throw new Error("Enter a valid ETH amount.");
 
   const provider = browserProvider || (await getReadProvider());
-  const tokenAddress = cleanAddress(el.tokenAddress.value);
+  const tokenAddress = configuredAddress("token", el.tokenAddress.value);
   if (!isAddress(tokenAddress)) throw new Error("Set token first.");
 
   const { poolKey, sqrtPriceX96 } = await getLpContext(provider);
@@ -747,7 +755,7 @@ async function addOfficialLp() {
 
 async function claimLpEth() {
   if (!signer) throw new Error("Connect wallet first.");
-  const launcherAddress = cleanAddress(el.launcherAddress.value);
+  const launcherAddress = configuredAddress("launcher", el.launcherAddress.value);
   if (!isAddress(launcherAddress)) throw new Error("Set launcher first.");
   const provider = browserProvider || (await getReadProvider());
   const launcher = new ethers.Contract(launcherAddress, LAUNCHER_ABI, provider);
@@ -762,7 +770,7 @@ async function claimLpEth() {
 
 async function mintTokens() {
   if (!signer) throw new Error("Connect wallet first.");
-  const launcherAddress = cleanAddress(el.launcherAddress.value);
+  const launcherAddress = configuredAddress("launcher", el.launcherAddress.value);
   const value = parseUnitsSafe(el.mintEth.value);
   if (!isAddress(launcherAddress) || value <= 0n) throw new Error("Enter a valid mint amount.");
   const launcher = new ethers.Contract(launcherAddress, LAUNCHER_ABI, signer);
@@ -774,7 +782,7 @@ async function mintTokens() {
 
 async function claimFreeMint() {
   if (!signer) throw new Error("Connect wallet first.");
-  const launcherAddress = cleanAddress(el.launcherAddress.value);
+  const launcherAddress = configuredAddress("launcher", el.launcherAddress.value);
   if (!isAddress(launcherAddress)) throw new Error("Set launcher first.");
   const launcher = new ethers.Contract(launcherAddress, LAUNCHER_ABI, signer);
   const tx = await launcher.claim();
@@ -785,8 +793,8 @@ async function claimFreeMint() {
 
 async function approveSell() {
   if (!signer) throw new Error("Connect wallet first.");
-  const tokenAddress = cleanAddress(el.tokenAddress.value);
-  const launcherAddress = cleanAddress(el.launcherAddress.value);
+  const tokenAddress = configuredAddress("token", el.tokenAddress.value);
+  const launcherAddress = configuredAddress("launcher", el.launcherAddress.value);
   const amount = selectedSellAmountRaw();
   if (!isAddress(tokenAddress) || !isAddress(launcherAddress) || amount <= 0n) {
     throw new Error("Set launcher and move the sell slider first.");
@@ -799,7 +807,7 @@ async function approveSell() {
 
 async function sellTokens() {
   if (!signer) throw new Error("Connect wallet first.");
-  const launcherAddress = cleanAddress(el.launcherAddress.value);
+  const launcherAddress = configuredAddress("launcher", el.launcherAddress.value);
   const amount = selectedSellAmountRaw();
   if (!isAddress(launcherAddress) || amount <= 0n) throw new Error("Move the sell slider first.");
   const launcher = new ethers.Contract(launcherAddress, LAUNCHER_ABI, signer);
@@ -811,11 +819,11 @@ async function sellTokens() {
 
 async function approveDraw() {
   if (!signer) throw new Error("Connect wallet first.");
-  const tokenAddress = cleanAddress(el.tokenAddress.value);
-  const drawAddress = cleanAddress(el.drawAddress.value);
+  const tokenAddress = configuredAddress("token", el.tokenAddress.value);
+  const drawAddress = configuredAddress("draw", el.drawAddress.value);
   const amount = parseUnitsSafe(el.drawAmount.value);
   if (!isAddress(tokenAddress) || !isAddress(drawAddress) || amount <= 0n) {
-    throw new Error("Set token, draw contract, and burn amount first.");
+    throw new Error("Enter a valid burn amount first.");
   }
   const token = new ethers.Contract(tokenAddress, TOKEN_ABI, signer);
   const tx = await token.approve(drawAddress, amount);
@@ -825,7 +833,7 @@ async function approveDraw() {
 
 async function enterDraw() {
   if (!signer) throw new Error("Connect wallet first.");
-  const drawAddress = cleanAddress(el.drawAddress.value);
+  const drawAddress = configuredAddress("draw", el.drawAddress.value);
   const amount = parseUnitsSafe(el.drawAmount.value);
   if (!isAddress(drawAddress) || amount <= 0n) throw new Error("Enter a valid draw amount.");
   playPenaltyShot();
@@ -948,12 +956,18 @@ function selectedSellAmountRaw() {
 
 function parseUnitsSafe(value) {
   try {
-    const trimmed = String(value || "").trim();
+    const trimmed = String(value || "").replace(/,/g, "").trim();
     if (!trimmed) return 0n;
     return ethers.parseUnits(trimmed, 18);
   } catch {
     return 0n;
   }
+}
+
+function formatInputToken(value, decimals = 4) {
+  const [whole, fraction = ""] = ethers.formatUnits(value, 18).split(".");
+  const trimmedFraction = fraction.slice(0, decimals).replace(/0+$/, "");
+  return trimmedFraction ? `${whole}.${trimmedFraction}` : whole;
 }
 
 function formatEth(value) {

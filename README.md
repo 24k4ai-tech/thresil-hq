@@ -51,7 +51,7 @@ Current build focus:
 - Sourcify mainnet verification:
   - Exact match: Launcher, Token, Last-buyer pot, Penalty draw, LP club.
   - Match: V4 hook, HookDeployer.
-- Etherscan verification needs an `ETHERSCAN_API_KEY`; no Etherscan key is stored in this repository.
+- Etherscan mainnet verification is complete for Launcher, Token, Last-buyer pot, Penalty draw, LP club, V4 hook, and HookDeployer.
 
 ## Local Development
 

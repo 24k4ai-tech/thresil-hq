@@ -766,7 +766,7 @@ input {
 .toast {
   position: fixed;
   right: 18px;
-  bottom: 18px;
+  bottom: max(18px, env(safe-area-inset-bottom));
   max-width: min(420px, calc(100vw - 32px));
   padding: 14px 16px;
   border: 1px solid rgba(242, 203, 91, 0.28);
@@ -776,6 +776,7 @@ input {
   transform: translateY(18px);
   transition: opacity 160ms ease, transform 160ms ease;
   pointer-events: none;
+  z-index: 80;
 }
 
 .toast.show {
@@ -1567,6 +1568,19 @@ input {
   .runnerC {
     left: 38%;
     top: 82px;
+  }
+
+  .toast {
+    top: max(14px, env(safe-area-inset-top));
+    right: 14px;
+    bottom: auto;
+    left: 14px;
+    max-width: none;
+    transform: translateY(-18px);
+  }
+
+  .toast.show {
+    transform: translateY(0);
   }
 
 }
