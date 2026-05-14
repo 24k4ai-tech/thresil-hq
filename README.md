@@ -7,6 +7,7 @@ Open-source repository for the `Oracle777` / `777X` arcade contracts, website, t
 - Token name: `Oracle777`
 - Token symbol: `777X`
 - Website: [https://www.777x.space/](https://www.777x.space/)
+- X: [https://x.com/Oracle_777X](https://x.com/Oracle_777X)
 
 This repository contains:
 
