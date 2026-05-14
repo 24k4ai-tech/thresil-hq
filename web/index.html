@@ -1,0 +1,555 @@
+<!doctype html>
+<html lang="en" prefix="og: https://ogp.me/ns#">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Oracle777 | 777X.SPACE</title>
+    <meta
+      name="description"
+      content="Oracle777 is a THRESIL football arcade with a 17 ETH SATO-style mint rail, a SOTO holder claim lane, a last-buyer pot, and a burn-to-shoot penalty draw."
+    />
+    <link rel="canonical" href="https://www.777x.space/" />
+    <link rel="image_src" href="https://www.777x.space/assets/oracle777-og-card-wide.jpg" />
+    <link rel="icon" href="./assets/oracle777-logo.jpg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Oracle777" />
+    <meta property="og:title" content="Oracle777 | 777X.SPACE" />
+    <meta property="og:description" content="17 ETH mint rail. Claim the SOTO lane. Hold the last buyer spot. Burn into the penalty draw." />
+    <meta property="og:url" content="https://www.777x.space/" />
+    <meta property="og:image" content="https://www.777x.space/assets/oracle777-og-card-wide.jpg" />
+    <meta property="og:image:url" content="https://www.777x.space/assets/oracle777-og-card-wide.jpg" />
+    <meta property="og:image:secure_url" content="https://www.777x.space/assets/oracle777-og-card-wide.jpg" />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Oracle777 777X football arcade card" />
+    <meta itemprop="image" content="https://www.777x.space/assets/oracle777-og-card-wide.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Oracle777 | 777X.SPACE" />
+    <meta name="twitter:description" content="17 ETH mint rail. Claim the SOTO lane. Hold the last buyer spot. Burn into the penalty draw." />
+    <meta name="twitter:image" content="https://www.777x.space/assets/oracle777-og-card-wide.jpg" />
+    <meta property="og:updated_time" content="2026-05-14T12:50:00Z" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.13.5/dist/ethers.umd.min.js"></script>
+  </head>
+  <body>
+    <div class="noise" aria-hidden="true"></div>
+    <div class="scanline" aria-hidden="true"></div>
+
+    <header class="shellHeader">
+      <div class="brandCluster">
+        <div class="brandIcon">
+          <img src="./assets/musk-cr7-kobe.jpg" alt="Oracle777 logo" />
+        </div>
+        <div class="brandCopy">
+          <strong>Oracle777</strong>
+          <small>THRESIL football arcade curve</small>
+        </div>
+      </div>
+      <div class="headerActions">
+        <a class="howPlayCta" href="./how-to-play.html">How To Play</a>
+        <a href="https://github.com/24k4ai-tech/thresil-hq" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <button id="refreshBtn" type="button">Sync</button>
+        <button id="connectBtn" type="button">Connect Wallet</button>
+      </div>
+    </header>
+
+    <main class="page">
+      <section class="heroBand">
+        <div class="heroCopy">
+          <span class="eyebrow">THRESIL / Oracle777</span>
+          <h1>Mint first. Hold the last buyer spot. Burn to take the penalty.</h1>
+          <p>
+            Oracle777 keeps the SATO mint rail first, opens a fixed SOTO holder claim lane, pays the last buyer pot on
+            the next touch, and turns every burn into one live penalty entry. Penalty rounds lock a future block seed
+            before payout, keeping settlement onchain and harder to reroll.
+          </p>
+          <div class="heroChips">
+            <span>Opening curve closes after 17 ETH gross buy-in</span>
+            <span>SATO reserve path</span>
+            <span>First 77 minutes: every trade tax is 6.0%</span>
+            <span>After 77 minutes: API tax can only be 0.0%-0.8%</span>
+            <span>Fuse tax only appears on sharp sell drawdowns</span>
+          </div>
+        </div>
+        <div class="heroVisual">
+          <div class="heroPoster">
+            <img src="./assets/musk-cr7-kobe.jpg" alt="Oracle777 banner" />
+            <div class="posterShade"></div>
+            <img class="chaos chaosA" src="./assets/musk-cr7-kobe.jpg" alt="" aria-hidden="true" />
+            <img class="chaos chaosB" src="./assets/musk-cr7-kobe.jpg" alt="" aria-hidden="true" />
+            <div class="coreNode">
+              <span>Oracle777</span>
+              <strong id="protocolStatus">Awaiting config</strong>
+              <small id="networkStatus">Read mode</small>
+            </div>
+          </div>
+          <div class="heroMetaRow">
+            <span>Block <strong id="blockNumber">-</strong></span>
+            <span id="feeStatus">Set launcher to read chain</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="consoleCard mintCard" id="mintPanel">
+        <div class="sectionDecal mintDecal" aria-hidden="true"></div>
+        <div class="sectionHead">
+          <div>
+            <span class="sectionKicker">1 / Mint Board</span>
+            <h2>Curve Mint</h2>
+          </div>
+          <div class="sectionMeta">
+            <span id="curveStatus">-</span>
+          </div>
+        </div>
+
+        <div class="mintVisualBand">
+          <div class="curveDial" id="curveDial">
+            <div class="curveDialCore">
+              <span>Curve fill</span>
+              <strong id="curveDialLabel">-</strong>
+            </div>
+          </div>
+          <div class="mintMiniNotes">
+            <div class="miniNote">
+              <span>Reserve target</span>
+              <strong>17 ETH gross buy-in</strong>
+            </div>
+            <div class="miniNote">
+              <span>Curve style</span>
+              <strong>SATO reserve</strong>
+            </div>
+            <div class="miniNote">
+              <span>Fuse mode</span>
+              <strong id="fuseMode">-</strong>
+            </div>
+            <div class="miniNote">
+              <span>My state</span>
+              <strong id="myTokenBalance">-</strong>
+            </div>
+          </div>
+          <div class="mintPoster">
+            <img src="./assets/casino-playbig.jpg" alt="Oracle777 mint poster" />
+          </div>
+        </div>
+
+        <div class="metricGrid">
+          <article class="metric">
+            <span>Total supply</span>
+            <strong id="totalSupply">-</strong>
+          </article>
+          <article class="metric">
+            <span>Curve minted</span>
+            <strong id="genesisMinted">-</strong>
+          </article>
+          <article class="metric">
+            <span>Curve reserve</span>
+            <strong id="curveReserve">-</strong>
+          </article>
+          <article class="metric">
+            <span>Current price</span>
+            <strong id="currentPrice">-</strong>
+          </article>
+          <article class="metric">
+            <span>Curve left</span>
+            <strong id="curveRemaining">-</strong>
+          </article>
+          <article class="metric">
+            <span>Extra sell tax now</span>
+            <strong id="currentFuseTax">-</strong>
+          </article>
+          <article class="metric">
+            <span>Fuse high anchor</span>
+            <strong id="fuseHighPrice">-</strong>
+          </article>
+        </div>
+
+        <div class="tradeGrid">
+          <section class="tradePanel">
+            <div class="tradeHead">
+              <span>Mint with ETH</span>
+              <strong>Entry side</strong>
+            </div>
+            <label class="field">
+              <span>ETH amount</span>
+              <input id="mintEth" value="1" inputmode="decimal" />
+            </label>
+            <div class="readout">
+              <span>Curve quote</span>
+              <strong id="mintQuote">-</strong>
+            </div>
+            <button id="mintBtn" type="button">Mint Oracle777</button>
+          </section>
+
+          <section class="tradePanel">
+            <div class="tradeHead">
+              <span>Sell back to curve</span>
+              <strong>Exit side</strong>
+            </div>
+            <div class="sliderWrap">
+              <div class="sliderHead">
+                <span>Wallet balance share</span>
+                <strong id="sellPercentValue">0.0%</strong>
+              </div>
+              <input id="sellPercent" type="range" min="0" max="100" step="0.1" value="0" />
+            </div>
+            <div class="presetRow" aria-label="sell presets">
+              <button class="presetChip" data-sell-preset="25" type="button">25%</button>
+              <button class="presetChip" data-sell-preset="50" type="button">50%</button>
+              <button class="presetChip" data-sell-preset="75" type="button">75%</button>
+              <button class="presetChip" data-sell-preset="100" type="button">100%</button>
+            </div>
+            <div class="readout">
+              <span>Selected 777X</span>
+              <strong id="sellAmountPreview">-</strong>
+            </div>
+            <div class="readout">
+              <span>Estimated ETH out</span>
+              <strong id="sellQuote">-</strong>
+            </div>
+            <p class="compactText actionHint">
+              Before 17 ETH is filled, curve sells put 777X back into the opening inventory. After 17 ETH is filled,
+              the opening rail is closed forever and sell-to-curve burns the returned 777X.
+            </p>
+            <div class="buttonRow">
+              <button id="approveSellBtn" type="button">Approve</button>
+              <button id="sellBtn" type="button">Sell To Curve</button>
+            </div>
+          </section>
+        </div>
+
+        <section class="claimBand">
+          <div class="claimCopy">
+            <span class="sectionKicker">SOTO Claim Lane</span>
+            <h3>Tribute to SOTO holders (free mint)</h3>
+            <p class="compactText">
+              A fixed 3% lane is reserved for SOTO holders. Exactly 7777 claims exist. Each successful claim gets the
+              same slice. One wallet, one press.
+            </p>
+          </div>
+          <div class="claimGrid">
+            <article class="metric">
+              <span>Claim left</span>
+              <strong id="claimRemaining">-</strong>
+            </article>
+            <article class="metric">
+              <span>Claimed wallets</span>
+              <strong id="claimedWallets">-</strong>
+            </article>
+            <article class="metric">
+              <span>Each claim</span>
+              <strong id="claimShare">-</strong>
+            </article>
+            <article class="metric">
+              <span>My SOTO status</span>
+              <strong id="claimSourceBalance">-</strong>
+            </article>
+            <button id="claimBtn" type="button">Free Mint for SOTO Holders</button>
+          </div>
+        </section>
+      </section>
+
+      <section class="gameGrid">
+        <section class="consoleCard gameCard">
+          <div class="sectionDecal signalDecal" aria-hidden="true"></div>
+          <div class="sectionHead">
+            <div>
+              <span class="sectionKicker">2 / Last Buyer</span>
+              <h2>Last-Buyer Pot</h2>
+            </div>
+            <span class="liveBadge">Auto-settle</span>
+          </div>
+
+          <div class="signalVisual">
+            <img class="signalBackImage" src="./assets/cr7-casino-white.jpg" alt="" aria-hidden="true" />
+            <div class="pulse"></div>
+            <div class="pulse pulse2"></div>
+            <div class="signalLabel">LAST BUYER</div>
+          </div>
+
+          <div class="metricGrid compact">
+            <article class="metric">
+              <span>Pot</span>
+              <strong id="jackpotBalance">-</strong>
+            </article>
+            <article class="metric">
+              <span>Current buyer</span>
+              <strong id="lastBuyer">-</strong>
+            </article>
+            <article class="metric">
+              <span>Time left</span>
+              <strong id="signalCountdown">-</strong>
+            </article>
+            <article class="metric">
+              <span>Prev winner</span>
+              <strong id="jackpotLastWinner">-</strong>
+            </article>
+            <article class="metric">
+              <span>Prev payout</span>
+              <strong id="jackpotLastPayout">-</strong>
+            </article>
+          </div>
+
+          <p class="explainText compactText">
+            Any qualifying buy makes that wallet the current last buyer. If forty-five minutes pass with no later
+            qualifying buy, the next buy, sell, or penalty burn settles the round and sends 30% of the pot to that last
+            buyer. The remaining 70% stays behind as seed.
+          </p>
+        </section>
+
+        <section class="consoleCard gameCard">
+          <div class="sectionDecal drawDecal" aria-hidden="true"></div>
+          <div class="sectionHead">
+            <div>
+              <span class="sectionKicker">3 / Penalty Draw</span>
+              <h2>Burn To Shoot</h2>
+            </div>
+            <span class="liveBadge">30% pot / 17m round</span>
+          </div>
+
+          <div class="penaltyStage" id="penaltyStage">
+            <div class="chaseScene" aria-hidden="true">
+              <div class="pitchLines"></div>
+              <div class="cartoonPlayer runner runnerA" data-runner data-star="cr7">
+                <span class="head"></span>
+                <span class="body"></span>
+                <span class="arm armA"></span>
+                <span class="arm armB"></span>
+                <span class="leg legA"></span>
+                <span class="leg legB"></span>
+              </div>
+              <div class="cartoonPlayer runner runnerB" data-runner data-star="messi">
+                <span class="head"></span>
+                <span class="body"></span>
+                <span class="arm armA"></span>
+                <span class="arm armB"></span>
+                <span class="leg legA"></span>
+                <span class="leg legB"></span>
+              </div>
+              <div class="cartoonPlayer runner runnerC" data-runner data-star="mbappe">
+                <span class="head"></span>
+                <span class="body"></span>
+                <span class="arm armA"></span>
+                <span class="arm armB"></span>
+                <span class="leg legA"></span>
+                <span class="leg legB"></span>
+              </div>
+            </div>
+            <div class="goalBox">
+              <div class="goalNet"></div>
+              <div class="goalKeeper" id="goalKeeper">
+                <span class="keeperHead"></span>
+                <span class="keeperBody"></span>
+                <span class="keeperArm keeperArmA"></span>
+                <span class="keeperArm keeperArmB"></span>
+              </div>
+              <div class="penaltyBall" id="penaltyBall"></div>
+            </div>
+            <div class="penaltyReadout">
+              <strong id="shotOutcome">READY</strong>
+              <span id="shotDetail">Burn any time. Every burn logs one weighted shot into the live 17-minute round.</span>
+              <small>Big burns gain more weight, but the curve is square-rooted so smaller wallets still keep a live shot.</small>
+            </div>
+          </div>
+
+          <div class="metricGrid compact">
+            <article class="metric">
+              <span>Draw pot</span>
+              <strong id="drawBalance">-</strong>
+            </article>
+            <article class="metric">
+              <span>Round ends in</span>
+              <strong id="drawCountdown">-</strong>
+            </article>
+            <article class="metric">
+              <span>Entries</span>
+              <strong id="drawEntries">-</strong>
+            </article>
+            <article class="metric">
+              <span>Prev winner</span>
+              <strong id="drawLastWinner">-</strong>
+            </article>
+            <article class="metric">
+              <span>Prev payout</span>
+              <strong id="drawLastPayout">-</strong>
+            </article>
+          </div>
+
+          <div class="sliderWrap">
+            <div class="sliderHead">
+              <span>Burn from wallet balance</span>
+              <strong id="drawPercentValue">0.0%</strong>
+            </div>
+            <input id="drawPercent" type="range" min="0" max="100" step="0.1" value="0" />
+          </div>
+          <div class="readout">
+            <span>Selected 777X</span>
+            <strong id="drawAmountPreview">-</strong>
+          </div>
+          <label class="field">
+            <span>Exact burn override (optional)</span>
+            <input id="drawAmount" value="0" inputmode="decimal" />
+          </label>
+          <div class="buttonRow">
+            <button id="approveDrawBtn" type="button">Approve</button>
+            <button id="drawEnterBtn" type="button">Burn Into Penalty Draw</button>
+          </div>
+
+          <p class="explainText compactText">
+            Every burn gives you a shot in the current 17-minute round. The token burn is real. The football animation
+            is theatre. After the timer ends, the first buy, sell, or burn locks a future block seed; a later touch pays
+            the onchain winner.
+          </p>
+        </section>
+      </section>
+
+      <section class="infoGrid">
+        <article class="infoCard">
+          <img class="infoDecal" src="./assets/casino-playbig.jpg" alt="" aria-hidden="true" />
+          <span>Trade tax</span>
+          <h3>How the opening split works</h3>
+          <p class="compactText">
+            For the first 77 minutes, every buy and sell pays 6.0% total: 2.0% API, 1.0% last-buyer pot,
+            1.0% official LP rewards, and 2.0% penalty draw. After 77 minutes, only the API piece can change, and it
+            can never be higher than 0.8%.
+          </p>
+        </article>
+        <article class="infoCard">
+          <img class="infoDecal" src="./assets/oracle777-logo.jpg" alt="" aria-hidden="true" />
+          <span>Curve exit</span>
+          <h3>What sell-to-curve means</h3>
+          <p class="compactText">
+            Before the 17 ETH fill, curve sells return 777X to the opening inventory so the curve can keep functioning.
+            After the fill, the opening buy rail is closed forever, so sell-to-curve burns the returned 777X instead.
+          </p>
+        </article>
+        <article class="infoCard">
+          <img class="infoDecal" src="./assets/casino-playbig.jpg" alt="" aria-hidden="true" />
+          <span>Fuse logic</span>
+          <h3>How the crash tax works</h3>
+          <p class="compactText">
+            The fuse watches the recent high. For the first 6 hours it resets every 30 minutes. After that it switches
+            to 3-hour windows. If price falls below 90%, 80%, or 40% of the live window high, extra sell tax appears.
+            Official LP wallets receive 20.0% of that extra fuse tax.
+          </p>
+        </article>
+        <article class="infoCard">
+          <img class="infoDecal" src="./assets/oracle777-logo.jpg" alt="" aria-hidden="true" />
+          <span>Round logic</span>
+          <h3>Why the round stays fixed</h3>
+          <p class="compactText">
+            Keeping the penalty round fixed at 17 minutes is the cleanest path. Users can burn at any time, the math
+            is readable, and payout uses a future block seed after the timer expires. Random windows sound fun, but
+            they are harder to audit and harder to explain.
+          </p>
+        </article>
+      </section>
+
+      <section class="consoleCard" id="lpPanel">
+        <div class="sectionHead">
+          <div>
+            <span class="sectionKicker">4 / Community LP</span>
+            <h2>LP Helper</h2>
+          </div>
+          <span class="liveBadge">Small side lane</span>
+        </div>
+
+        <div class="tradeGrid lpCompactGrid">
+          <section class="tradePanel lpCompactPanel">
+            <div class="tradeHead">
+              <span>Official v4 LP</span>
+              <strong>smaller side board</strong>
+            </div>
+            <label class="field">
+              <span>ETH to pair</span>
+              <input id="lpEthInput" value="0.10" inputmode="decimal" />
+            </label>
+            <div class="readout">
+              <span>Auto-matched 777X</span>
+              <strong id="lpTokenPreview">-</strong>
+            </div>
+            <div class="readout">
+              <span>Official pool price</span>
+              <strong id="lpPoolPrice">-</strong>
+            </div>
+            <div class="readout">
+              <span>Manager route</span>
+              <strong id="lpManagerStatus">Awaiting config</strong>
+            </div>
+            <div class="metricGrid compact lpMiniMetrics">
+              <article class="metric">
+                <span>My tracked LP</span>
+                <strong id="lpTrackedEth">-</strong>
+              </article>
+              <article class="metric">
+                <span>My boost</span>
+                <strong id="lpBoostBps">-</strong>
+              </article>
+              <article class="metric">
+                <span>Pending claim</span>
+                <strong id="lpPendingReward">-</strong>
+              </article>
+              <article class="metric">
+                <span>LP reward rule</span>
+                <strong id="lpFuseShare">-</strong>
+              </article>
+            </div>
+            <div class="buttonRow">
+              <button id="lpAddBtn" type="button">Add LP</button>
+              <button id="lpClaimBtn" type="button">Claim LP ETH</button>
+            </div>
+            <p class="compactText actionHint">
+              This helper pairs ETH with the matching 777X amount from the live v4 pool price. LP rewards only count
+              paired official-pool positions; single-sided ETH does not earn the LP rail. The 1.0% trade rail and the
+              LP slice of fuse tax are claimable from LPClub.
+            </p>
+          </section>
+        </div>
+      </section>
+
+      <details class="detailsBlock">
+        <summary>Arcade Wiring</summary>
+        <div class="detailsBody configGrid">
+          <label class="field">
+            <span>Launcher</span>
+            <input id="launcherAddress" placeholder="0x..." />
+          </label>
+          <label class="field">
+            <span>Token</span>
+            <input id="tokenAddress" placeholder="0x..." />
+          </label>
+          <label class="field">
+            <span>Last-buyer pot</span>
+            <input id="jackpotAddress" placeholder="0x..." />
+          </label>
+          <label class="field">
+            <span>Penalty draw</span>
+            <input id="drawAddress" placeholder="0x..." />
+          </label>
+          <button id="saveConfigBtn" type="button">Save Local Config</button>
+        </div>
+      </details>
+
+      <details class="detailsBlock creditBlock">
+        <summary>Image Credits</summary>
+        <div class="detailsBody creditList">
+          <a href="https://commons.wikimedia.org/wiki/File:Cristiano_Ronaldo_2018_(cropped).jpg" target="_blank" rel="noopener noreferrer">Cristiano Ronaldo</a>
+          <a href="https://commons.wikimedia.org/wiki/File:Lionel-Messi-Argentina-2022-FIFA-World-Cup_(cropped).jpg" target="_blank" rel="noopener noreferrer">Lionel Messi</a>
+          <a href="https://commons.wikimedia.org/wiki/File:Kylian_Mbappe_2017.jpg" target="_blank" rel="noopener noreferrer">Kylian Mbappe</a>
+          <a href="https://commons.wikimedia.org/wiki/File:Erling_Haaland_2023_(cropped-v2).jpg" target="_blank" rel="noopener noreferrer">Erling Haaland</a>
+          <a href="https://commons.wikimedia.org/wiki/File:Neymar_2018.jpg" target="_blank" rel="noopener noreferrer">Neymar Jr</a>
+        </div>
+      </details>
+    </main>
+
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
+    <script src="./app.js?v=20260514-realtime"></script>
+  </body>
+</html>

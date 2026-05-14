@@ -1,0 +1,17 @@
+{
+  "name": "rugcoin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Oracle777 777X arcade contracts, website, tests, and Cloudflare Pages deploy helpers",
+  "scripts": {
+    "test": "forge test -q",
+    "cf:pages:list": "npx -y wrangler@4.86.0 pages project list",
+    "cf:pages:create": "npx -y wrangler@4.86.0 pages project create thresil-hq --production-branch main",
+    "cf:pages:deploy": "npx -y wrangler@4.86.0 pages deploy web --project-name thresil-hq --branch main",
+    "cf:domain:add": "powershell -ExecutionPolicy Bypass -File .\\script\\AddPagesDomain.ps1",
+    "cf:ship": "powershell -ExecutionPolicy Bypass -File .\\script\\DeployPages.ps1"
+  },
+  "devDependencies": {
+    "wrangler": "4.86.0"
+  }
+}

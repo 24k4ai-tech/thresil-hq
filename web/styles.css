@@ -1,0 +1,1572 @@
+:root {
+  color-scheme: dark;
+  --bg: #160407;
+  --bg-2: #25080e;
+  --panel: rgba(38, 7, 13, 0.88);
+  --panel-2: rgba(28, 9, 12, 0.94);
+  --line: rgba(236, 192, 95, 0.26);
+  --line-2: rgba(146, 18, 43, 0.48);
+  --text: #fff0d6;
+  --muted: #d9b98b;
+  --cyan: #f2cb5b;
+  --violet: #9b1734;
+  --lime: #b84a4d;
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.42);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(155, 23, 52, 0.28), transparent 24%),
+    radial-gradient(circle at top right, rgba(242, 203, 91, 0.12), transparent 24%),
+    radial-gradient(circle at 50% 100%, rgba(118, 12, 30, 0.22), transparent 30%),
+    linear-gradient(180deg, #0d0305 0%, #21070c 52%, #110608 100%);
+  color: var(--text);
+  font-family: "Inter", sans-serif;
+}
+
+body {
+  position: relative;
+}
+
+.noise,
+.scanline {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+}
+
+.noise {
+  opacity: 0.08;
+  mix-blend-mode: screen;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 244, 214, 0.05) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(90deg, rgba(255, 244, 214, 0.03) 0 1px, transparent 1px 6px);
+}
+
+.scanline {
+  background: linear-gradient(180deg, rgba(242, 203, 91, 0.03), transparent 30%, rgba(188, 48, 72, 0.06));
+}
+
+a,
+button,
+input {
+  font: inherit;
+}
+
+a,
+button {
+  min-height: 46px;
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(242, 203, 91, 0.14), rgba(188, 48, 72, 0.14)),
+    rgba(21, 10, 11, 0.9);
+  color: var(--text);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
+  cursor: pointer;
+  transition: transform 140ms ease, border-color 140ms ease, box-shadow 140ms ease;
+}
+
+a:hover,
+button:hover {
+  transform: translateY(-1px);
+  border-color: rgba(242, 203, 91, 0.52);
+  box-shadow: 0 12px 28px rgba(242, 203, 91, 0.08);
+}
+
+input {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--line);
+  background: rgba(17, 9, 11, 0.94);
+  color: var(--text);
+}
+
+.shellHeader,
+.page {
+  width: min(1240px, calc(100vw - 28px));
+  margin: 0 auto;
+}
+
+.shellHeader {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 18px 0;
+  background: linear-gradient(180deg, rgba(16, 8, 9, 0.96), rgba(16, 8, 9, 0.74));
+  backdrop-filter: blur(16px);
+}
+
+.headerActions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.headerActions .howPlayCta {
+  position: relative;
+  isolation: isolate;
+  min-width: 142px;
+  border-color: rgba(242, 203, 91, 0.82);
+  background:
+    linear-gradient(135deg, rgba(255, 238, 166, 0.96), rgba(242, 203, 91, 0.86) 42%, rgba(134, 18, 43, 0.9));
+  color: #1c080d;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  box-shadow: 0 0 0 1px rgba(255, 243, 209, 0.26), 0 14px 34px rgba(242, 203, 91, 0.2);
+}
+
+.headerActions .howPlayCta::after {
+  content: "";
+  position: absolute;
+  inset: -5px;
+  z-index: -1;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(242, 203, 91, 0.38), rgba(155, 23, 52, 0.18));
+  opacity: 0.9;
+  filter: blur(10px);
+}
+
+.headerActions .howPlayCta:hover {
+  border-color: rgba(255, 243, 209, 0.92);
+  box-shadow: 0 0 0 1px rgba(255, 243, 209, 0.34), 0 18px 42px rgba(242, 203, 91, 0.28);
+}
+
+.brandCluster,
+.headerActions,
+.heroChips,
+.sectionMeta,
+.buttonRow,
+.sliderHead,
+.readout {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.brandIcon {
+  width: 68px;
+  height: 68px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+}
+
+.brandIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.08) saturate(1.08);
+}
+
+.brandCopy strong {
+  display: block;
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.brandCopy small,
+.eyebrow,
+.sectionKicker,
+.metric span,
+.infoCard span,
+.field span,
+.readout span,
+.tradeHead span {
+  color: var(--muted);
+}
+
+.page {
+  padding: 22px 0 56px;
+}
+
+.heroBand,
+.consoleCard,
+.infoCard,
+.detailsBlock {
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(242, 203, 91, 0.06), transparent 22%),
+    linear-gradient(180deg, rgba(188, 48, 72, 0.06), transparent 100%),
+    var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.heroBand {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(280px, 0.7fr);
+  gap: 24px;
+  padding: 28px;
+  margin-bottom: 22px;
+}
+
+.heroBand::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(12, 5, 6, 0.32), rgba(12, 5, 6, 0.72)),
+    url("./assets/musk-cr7-kobe.jpg") right center / cover no-repeat;
+  opacity: 0.3;
+}
+
+.heroCopy,
+.heroVisual {
+  position: relative;
+  z-index: 1;
+}
+
+.heroCopy h1 {
+  margin: 10px 0 14px;
+  max-width: 700px;
+  font-size: clamp(34px, 5vw, 58px);
+  line-height: 1.02;
+}
+
+.heroCopy p,
+.infoCard p,
+.explainText {
+  max-width: 760px;
+  color: #eadfbe;
+  line-height: 1.7;
+}
+
+.heroChips {
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.heroChips span,
+.liveBadge,
+.sectionMeta span {
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  background: rgba(18, 9, 10, 0.84);
+  color: var(--text);
+  font-size: 13px;
+}
+
+.heroVisual {
+  display: grid;
+  align-content: center;
+  gap: 18px;
+}
+
+.statusTile,
+.metric,
+.tradePanel,
+.infoCard,
+.detailsBody {
+  background: rgba(18, 10, 11, 0.82);
+  border: 1px solid rgba(242, 203, 91, 0.12);
+}
+
+.statusTile {
+  padding: 16px;
+}
+
+.orbitScene {
+  position: relative;
+  min-height: 300px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at center, rgba(242, 203, 91, 0.22), transparent 38%),
+    linear-gradient(180deg, rgba(188, 48, 72, 0.14), rgba(29, 143, 99, 0.12)),
+    rgba(16, 8, 10, 0.82);
+}
+
+.orbit,
+.curveDial {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.orbit {
+  border: 1px solid rgba(242, 203, 91, 0.16);
+}
+
+.orbitA {
+  width: 270px;
+  height: 270px;
+  animation: slowSpin 18s linear infinite;
+}
+
+.orbitB {
+  width: 210px;
+  height: 210px;
+  border-color: rgba(188, 48, 72, 0.28);
+  animation: slowSpinReverse 14s linear infinite;
+}
+
+.orbitC {
+  width: 340px;
+  height: 340px;
+  border-style: dashed;
+  border-color: rgba(29, 143, 99, 0.22);
+  animation: slowSpin 28s linear infinite;
+}
+
+.coreNode {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  gap: 8px;
+  width: min(220px, 70%);
+  padding: 26px 22px;
+  border: 1px solid rgba(242, 203, 91, 0.24);
+  border-radius: 34px;
+  background: rgba(19, 10, 11, 0.86);
+  text-align: center;
+  box-shadow: inset 0 0 28px rgba(242, 203, 91, 0.08);
+}
+
+.coreNode span {
+  color: var(--muted);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+}
+
+.coreNode strong {
+  font-size: 20px;
+}
+
+.coreNode small {
+  color: #f0dfb3;
+}
+
+.heroMetaRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.heroMetaRow span {
+  flex: 1 1 220px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(242, 203, 91, 0.16);
+  background: rgba(17, 9, 11, 0.82);
+  color: #f2e4c2;
+  font-size: 13px;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.statusTile span {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.statusTile strong {
+  display: block;
+  margin-top: 8px;
+  font-size: 18px;
+}
+
+.consoleCard {
+  padding: 22px;
+  margin-bottom: 22px;
+}
+
+.sectionHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.sectionHead h2 {
+  margin: 6px 0 0;
+  font-size: 28px;
+}
+
+.metricGrid,
+.tradeGrid,
+.gameGrid,
+.infoGrid,
+.configGrid {
+  display: grid;
+  gap: 14px;
+}
+
+.metricGrid {
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.metricGrid.compact {
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.metric {
+  padding: 16px;
+  min-height: 108px;
+  border-radius: 24px;
+}
+
+.metric strong {
+  display: block;
+  margin-top: 10px;
+  font-size: 22px;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+.tradeGrid,
+.gameGrid,
+.infoGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.claimBand {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.2fr);
+  gap: 18px;
+  margin-top: 18px;
+  padding: 18px;
+  border-radius: 28px;
+  border: 1px solid rgba(242, 203, 91, 0.14);
+  background:
+    radial-gradient(circle at right center, rgba(242, 203, 91, 0.1), transparent 28%),
+    linear-gradient(180deg, rgba(29, 143, 99, 0.14), rgba(18, 10, 11, 0.88));
+}
+
+.claimCopy h3 {
+  margin: 6px 0 10px;
+  font-size: 24px;
+}
+
+.claimGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+
+.claimGrid button {
+  min-height: 108px;
+  border-radius: 24px;
+}
+
+.tradePanel,
+.infoCard {
+  padding: 18px;
+  border-radius: 26px;
+}
+
+.mintVisualBand {
+  display: grid;
+  grid-template-columns: 240px minmax(0, 1fr);
+  gap: 18px;
+  align-items: center;
+  margin-bottom: 18px;
+  overflow: hidden;
+}
+
+.curveDial {
+  position: relative;
+  width: 220px;
+  height: 220px;
+  background:
+    radial-gradient(circle at center, rgba(12, 7, 7, 0.98) 56%, transparent 57%),
+    conic-gradient(var(--cyan) 0deg, rgba(242, 203, 91, 0.12) 0deg);
+  box-shadow: inset 0 0 40px rgba(242, 203, 91, 0.16);
+}
+
+.curveDialCore {
+  position: absolute;
+  inset: 26%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(17, 9, 11, 0.95);
+  text-align: center;
+}
+
+.curveDialCore span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.curveDialCore strong {
+  font-size: 28px;
+}
+
+.mintMiniNotes {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.miniNote {
+  padding: 16px 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(242, 203, 91, 0.14);
+  background: linear-gradient(180deg, rgba(29, 143, 99, 0.16), rgba(17, 9, 11, 0.76));
+}
+
+.miniNote span {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.miniNote strong {
+  display: block;
+  margin-top: 8px;
+}
+
+.tradeHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.tradeHead strong {
+  color: var(--cyan);
+}
+
+.field,
+.sliderWrap {
+  display: grid;
+  gap: 8px;
+}
+
+.sliderWrap input[type="range"] {
+  width: 100%;
+  min-height: 0;
+  height: 14px;
+  padding: 0;
+  border: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, rgba(29, 143, 99, 0.9), rgba(242, 203, 91, 0.9), rgba(188, 48, 72, 0.9));
+  appearance: none;
+}
+
+.sliderWrap input[type="range"]::-webkit-slider-thumb {
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid #fff0c8;
+  background: #5e0f17;
+  box-shadow: 0 0 0 4px rgba(242, 203, 91, 0.22);
+}
+
+.presetRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.presetChip {
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+}
+
+.readout {
+  justify-content: space-between;
+  padding: 14px 16px;
+  margin-top: 12px;
+  border: 1px solid var(--line);
+  background: rgba(12, 10, 8, 0.78);
+}
+
+.readout strong {
+  font-family: "IBM Plex Mono", monospace;
+  text-align: right;
+  max-width: 68%;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+.buttonRow {
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.signalVisual,
+.wheelStage {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 16px;
+  min-height: 168px;
+  border-radius: 28px;
+  border: 1px solid var(--line-2);
+  background:
+    radial-gradient(circle at center, rgba(242, 203, 91, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(29, 143, 99, 0.18), rgba(21, 9, 10, 0.88));
+}
+
+.signalVisual {
+  display: grid;
+  place-items: center;
+}
+
+.pulse {
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border: 1px solid rgba(242, 203, 91, 0.28);
+  border-radius: 50%;
+  animation: pulse 3.2s linear infinite;
+}
+
+.pulse2 {
+  animation-delay: 1.6s;
+}
+
+.signalLabel {
+  position: relative;
+  z-index: 1;
+  padding: 12px 18px;
+  border: 1px solid rgba(242, 203, 91, 0.34);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  background: rgba(67, 14, 20, 0.72);
+}
+
+.wheelStage {
+  display: grid;
+  place-items: center;
+  min-height: 280px;
+}
+
+.drawWheel {
+  position: relative;
+  width: min(280px, 78vw);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 6px solid rgba(242, 203, 91, 0.42);
+  background:
+    conic-gradient(
+      from 0deg,
+      rgba(188, 48, 72, 0.92) 0 12.5%,
+      rgba(20, 20, 20, 0.92) 12.5% 25%,
+      rgba(242, 203, 91, 0.92) 25% 37.5%,
+      rgba(29, 143, 99, 0.88) 37.5% 50%,
+      rgba(188, 48, 72, 0.92) 50% 62.5%,
+      rgba(20, 20, 20, 0.92) 62.5% 75%,
+      rgba(242, 203, 91, 0.92) 75% 87.5%,
+      rgba(29, 143, 99, 0.88) 87.5% 100%
+    );
+  transition: transform 1.6s cubic-bezier(0.18, 0.84, 0.2, 1);
+  box-shadow: inset 0 0 60px rgba(255, 244, 214, 0.08), 0 18px 40px rgba(0, 0, 0, 0.24);
+}
+
+.wheelCore {
+  position: absolute;
+  inset: 26%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(18, 10, 11, 0.98), rgba(9, 7, 6, 0.98));
+  text-align: center;
+  border: 1px solid rgba(242, 203, 91, 0.28);
+}
+
+.wheelCore span {
+  color: var(--muted);
+  font-size: 13px;
+  letter-spacing: 0.16em;
+}
+
+.wheelCore strong {
+  font-size: 34px;
+}
+
+.wheelPointer {
+  position: absolute;
+  top: 18px;
+  width: 0;
+  height: 0;
+  border-left: 14px solid transparent;
+  border-right: 14px solid transparent;
+  border-top: 22px solid var(--cyan);
+  z-index: 2;
+}
+
+.actionHint {
+  margin: 12px 0 0;
+}
+
+.infoCard h3 {
+  margin: 10px 0;
+  font-size: 20px;
+}
+
+.infoCard {
+  position: relative;
+  overflow: hidden;
+}
+
+.infoDecal {
+  position: absolute;
+  right: -40px;
+  bottom: -44px;
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  opacity: 0.12;
+  transform: rotate(-8deg);
+  pointer-events: none;
+}
+
+.detailsBlock {
+  margin-top: 18px;
+  overflow: hidden;
+}
+
+.detailsBlock summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 18px 22px;
+  font-weight: 700;
+}
+
+.detailsBlock summary::-webkit-details-marker {
+  display: none;
+}
+
+.detailsBody {
+  padding: 0 22px 22px;
+}
+
+.configGrid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.toast {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  max-width: min(420px, calc(100vw - 32px));
+  padding: 14px 16px;
+  border: 1px solid rgba(242, 203, 91, 0.28);
+  background: rgba(17, 9, 11, 0.96);
+  color: var(--text);
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 160ms ease, transform 160ms ease;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.compactText {
+  max-width: 58ch;
+  font-size: 14px;
+}
+
+.heroBand::before {
+  background:
+    linear-gradient(90deg, rgba(12, 5, 6, 0.52), rgba(12, 5, 6, 0.78)),
+    url("./assets/musk-cr7-kobe.jpg") center center / cover no-repeat;
+  opacity: 0.36;
+}
+
+.heroPoster {
+  position: relative;
+  min-height: 360px;
+  overflow: hidden;
+  border-radius: 32px;
+  border: 1px solid rgba(242, 203, 91, 0.18);
+  background: rgba(16, 8, 10, 0.82);
+  box-shadow: inset 0 0 50px rgba(0, 0, 0, 0.42);
+}
+
+.heroPoster img,
+.mintPoster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.posterShade {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 6, 8, 0.12), rgba(10, 6, 8, 0.82)),
+    radial-gradient(circle at 80% 20%, rgba(242, 203, 91, 0.2), transparent 28%);
+}
+
+.chaos {
+  position: absolute;
+  width: 42%;
+  min-width: 150px;
+  aspect-ratio: 1.25;
+  object-fit: cover;
+  border: 1px solid rgba(242, 203, 91, 0.22);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.34);
+  opacity: 0.82;
+  pointer-events: none;
+}
+
+.chaosA {
+  left: -8%;
+  top: 8%;
+  transform: rotate(-9deg);
+}
+
+.chaosB {
+  right: -10%;
+  bottom: 14%;
+  transform: rotate(7deg);
+}
+
+#lpPanel {
+  padding-top: 20px;
+}
+
+.lpCompactGrid {
+  grid-template-columns: minmax(0, 720px);
+  justify-content: start;
+}
+
+.lpCompactPanel {
+  max-width: 720px;
+}
+
+.lpMiniMetrics {
+  margin-top: 8px;
+}
+
+.heroPoster .coreNode {
+  position: absolute;
+  left: 22px;
+  bottom: 22px;
+  width: min(240px, calc(100% - 44px));
+}
+
+.consoleCard,
+.gameCard,
+.mintCard {
+  position: relative;
+  overflow: hidden;
+}
+
+.sectionDecal {
+  position: absolute;
+  inset: auto -8% -18% auto;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  opacity: 0.12;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  filter: saturate(1.05) contrast(1.1);
+}
+
+.mintDecal,
+.signalDecal,
+.drawDecal {
+  background-image: url("./assets/casino-playbig.jpg");
+}
+
+.signalDecal {
+  background-image: url("./assets/cr7-casino-white.jpg");
+}
+
+.drawDecal {
+  background:
+    radial-gradient(circle at 35% 35%, rgba(242, 203, 91, 0.5), transparent 0 9%, transparent 10%),
+    linear-gradient(135deg, rgba(128, 20, 42, 0.65), rgba(10, 64, 43, 0.45));
+}
+
+.mintVisualBand {
+  grid-template-columns: 240px minmax(0, 1fr) 220px;
+  align-items: stretch;
+}
+
+.mintPoster {
+  min-height: 220px;
+  border-radius: 28px;
+  overflow: hidden;
+  border: 1px solid rgba(242, 203, 91, 0.16);
+  transform: rotate(-2deg);
+  box-shadow: var(--shadow);
+}
+
+.mintPoster img {
+  filter: contrast(1.06) saturate(1.02);
+}
+
+.signalVisual {
+  overflow: hidden;
+  background:
+    radial-gradient(circle at center, rgba(242, 203, 91, 0.16), transparent 34%),
+    linear-gradient(180deg, rgba(29, 143, 99, 0.18), rgba(21, 9, 10, 0.88));
+}
+
+.signalBackImage {
+  position: absolute;
+  inset: -28% -8% auto auto;
+  width: 58%;
+  min-width: 220px;
+  opacity: 0.2;
+  transform: rotate(8deg);
+  filter: saturate(1.1) contrast(1.1);
+  pointer-events: none;
+}
+
+.penaltyStage {
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 16px;
+  min-height: 430px;
+  border-radius: 28px;
+  border: 1px solid var(--line-2);
+  background:
+    radial-gradient(circle at 50% 24%, rgba(242, 203, 91, 0.2), transparent 28%),
+    linear-gradient(180deg, rgba(47, 10, 18, 0.3), transparent 24%),
+    linear-gradient(180deg, rgba(9, 69, 42, 0.4), rgba(7, 14, 10, 0.94) 42%, rgba(16, 8, 10, 0.98) 100%);
+}
+
+.penaltyStage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.05), transparent 16%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.05) 56%, transparent 56%);
+  pointer-events: none;
+}
+
+.chaseScene {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.pitchLines {
+  position: absolute;
+  inset: 18px;
+  border: 2px solid rgba(241, 241, 241, 0.18);
+  border-radius: 22px;
+  background:
+    linear-gradient(90deg, transparent calc(50% - 1px), rgba(241, 241, 241, 0.14) 50%, transparent calc(50% + 1px)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 42px),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 34px);
+  opacity: 0.9;
+}
+
+.pitchLines::after {
+  content: "";
+  position: absolute;
+  left: calc(50% - 58px);
+  top: 58px;
+  width: 116px;
+  height: 116px;
+  border: 2px solid rgba(241, 241, 241, 0.16);
+  border-radius: 50%;
+}
+
+.cartoonPlayer {
+  --kit: #f2cb5b;
+  --shorts: #5e1020;
+  position: absolute;
+  width: 58px;
+  height: 92px;
+  transform-origin: center bottom;
+  filter: drop-shadow(0 14px 18px rgba(0, 0, 0, 0.28));
+}
+
+.cartoonPlayer .head,
+.keeperHead {
+  position: absolute;
+  left: 17px;
+  top: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #f7d5ab;
+  box-shadow: inset -4px -2px 0 rgba(80, 34, 18, 0.16);
+}
+
+.cartoonPlayer .body,
+.keeperBody {
+  position: absolute;
+  left: 14px;
+  top: 26px;
+  width: 30px;
+  height: 38px;
+  border-radius: 12px 12px 9px 9px;
+  background: linear-gradient(180deg, var(--kit), color-mix(in srgb, var(--kit), #000 28%));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.cartoonPlayer .body::after,
+.keeperBody::after {
+  content: "";
+  position: absolute;
+  left: 11px;
+  top: 7px;
+  width: 8px;
+  height: 12px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.74);
+}
+
+.cartoonPlayer .arm,
+.cartoonPlayer .leg,
+.keeperArm {
+  position: absolute;
+  display: block;
+  border-radius: 999px;
+  transform-origin: top center;
+}
+
+.cartoonPlayer .arm,
+.keeperArm {
+  top: 31px;
+  width: 9px;
+  height: 34px;
+  background: #f7d5ab;
+}
+
+.cartoonPlayer .armA {
+  left: 8px;
+  transform: rotate(38deg);
+}
+
+.cartoonPlayer .armB {
+  right: 8px;
+  transform: rotate(-42deg);
+}
+
+.cartoonPlayer .leg {
+  top: 60px;
+  width: 11px;
+  height: 34px;
+  background: var(--shorts);
+}
+
+.cartoonPlayer .legA {
+  left: 19px;
+  transform: rotate(22deg);
+}
+
+.cartoonPlayer .legB {
+  right: 18px;
+  transform: rotate(-34deg);
+}
+
+.runnerA {
+  left: 12%;
+  top: 98px;
+  transform: rotate(-10deg) scale(1.03);
+}
+
+.runnerB {
+  right: 15%;
+  top: 88px;
+  transform: rotate(12deg) scale(0.94);
+}
+
+.runnerC {
+  left: 38%;
+  top: 54px;
+  transform: rotate(3deg) scale(0.82);
+  opacity: 0.72;
+}
+
+.cartoonPlayer[data-star="cr7"],
+.penaltyStage[data-star="cr7"] .goalKeeper {
+  --kit: #9f1d32;
+  --shorts: #efe2c1;
+}
+
+.cartoonPlayer[data-star="messi"],
+.penaltyStage[data-star="messi"] .goalKeeper {
+  --kit: #7dc9ff;
+  --shorts: #ffffff;
+}
+
+.cartoonPlayer[data-star="mbappe"],
+.penaltyStage[data-star="mbappe"] .goalKeeper {
+  --kit: #172463;
+  --shorts: #d8bd63;
+}
+
+.cartoonPlayer[data-star="haaland"],
+.penaltyStage[data-star="haaland"] .goalKeeper {
+  --kit: #86bfff;
+  --shorts: #181d2c;
+}
+
+.cartoonPlayer[data-star="neymar"],
+.penaltyStage[data-star="neymar"] .goalKeeper {
+  --kit: #ffd84f;
+  --shorts: #205c35;
+}
+
+.goalBox {
+  position: relative;
+  width: min(520px, calc(100% - 40px));
+  height: 176px;
+  margin: 172px auto 0;
+  overflow: visible;
+  border: 4px solid rgba(241, 241, 241, 0.92);
+  border-bottom-width: 8px;
+  border-radius: 12px 12px 0 0;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.01)),
+    radial-gradient(circle at top center, rgba(242, 203, 91, 0.2), transparent 44%);
+  box-shadow: inset 0 0 36px rgba(255, 255, 255, 0.08);
+}
+
+.goalNet {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(0deg, rgba(255, 255, 255, 0.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+  opacity: 0.36;
+}
+
+.goalKeeper,
+.penaltyBall {
+  position: absolute;
+  transition: transform 620ms cubic-bezier(0.2, 0.8, 0.2, 1), left 620ms cubic-bezier(0.2, 0.8, 0.2, 1), top 620ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.goalKeeper {
+  left: calc(50% - 36px);
+  top: 82px;
+  z-index: 2;
+  width: 72px;
+  height: 72px;
+  overflow: visible;
+  transform-origin: center bottom;
+}
+
+.keeperHead {
+  left: 24px;
+  top: 0;
+}
+
+.keeperBody {
+  left: 20px;
+  top: 27px;
+  height: 44px;
+  background: linear-gradient(180deg, var(--kit), color-mix(in srgb, var(--kit), #000 30%));
+}
+
+.keeperArm {
+  top: 34px;
+  width: 10px;
+  height: 42px;
+  background: #f7d5ab;
+}
+
+.keeperArmA {
+  left: 11px;
+  transform: rotate(54deg);
+}
+
+.keeperArmB {
+  right: 11px;
+  transform: rotate(-54deg);
+}
+
+.goalKeeper[data-side="left"] {
+  transform: translateX(-78px) rotate(-22deg);
+}
+
+.goalKeeper[data-side="right"] {
+  transform: translateX(78px) rotate(22deg);
+}
+
+.goalKeeper[data-side="center"] {
+  transform: translateX(0) rotate(0);
+}
+
+.penaltyBall {
+  left: calc(50% - 12px);
+  top: 196px;
+  width: 24px;
+  height: 24px;
+  z-index: 3;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at 40% 40%, #ffffff 0 40%, #171717 42% 52%, #ffffff 54% 100%);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.28);
+}
+
+.penaltyStage.shooting.goal .penaltyBall[data-path="left"],
+.penaltyStage.shooting.save .penaltyBall[data-path="left"] {
+  left: 24%;
+  top: 118px;
+}
+
+.penaltyStage.shooting.goal .penaltyBall[data-path="center"],
+.penaltyStage.shooting.save .penaltyBall[data-path="center"] {
+  left: calc(50% - 12px);
+  top: 108px;
+}
+
+.penaltyStage.shooting.goal .penaltyBall[data-path="right"],
+.penaltyStage.shooting.save .penaltyBall[data-path="right"] {
+  left: 76%;
+  top: 120px;
+}
+
+.penaltyStage.save .goalNet {
+  opacity: 0.26;
+}
+
+.penaltyStage.goal .goalBox {
+  box-shadow: inset 0 0 36px rgba(255, 255, 255, 0.08), 0 0 42px rgba(242, 203, 91, 0.12);
+}
+
+.penaltyStage.chaseBurst .runnerA {
+  animation: runnerDashA 680ms ease both;
+}
+
+.penaltyStage.chaseBurst .runnerB {
+  animation: runnerDashB 680ms ease both;
+}
+
+.penaltyStage.chaseBurst .runnerC {
+  animation: runnerDashC 680ms ease both;
+}
+
+@keyframes runnerDashA {
+  0% { transform: translateX(0) rotate(-10deg) scale(1.03); }
+  52% { transform: translate(46px, 16px) rotate(8deg) scale(1.08); }
+  100% { transform: translate(18px, 4px) rotate(-4deg) scale(1.03); }
+}
+
+@keyframes runnerDashB {
+  0% { transform: translateX(0) rotate(12deg) scale(0.94); }
+  52% { transform: translate(-42px, 20px) rotate(-10deg) scale(1); }
+  100% { transform: translate(-18px, 6px) rotate(5deg) scale(0.94); }
+}
+
+@keyframes runnerDashC {
+  0% { transform: translateY(0) rotate(3deg) scale(0.82); }
+  54% { transform: translate(8px, 34px) rotate(-6deg) scale(0.88); }
+  100% { transform: translate(3px, 12px) rotate(2deg) scale(0.82); }
+}
+
+.penaltyReadout {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  gap: 8px;
+  width: min(92%, 680px);
+  margin: 22px auto 0;
+  padding: 16px 18px;
+  border-radius: 22px;
+  border: 1px solid rgba(242, 203, 91, 0.16);
+  background: rgba(17, 9, 11, 0.72);
+}
+
+.creditList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.creditList a {
+  color: #f2cb5b;
+  font-size: 13px;
+}
+
+.penaltyReadout strong {
+  font-size: 22px;
+  letter-spacing: 0.12em;
+}
+
+.penaltyReadout span,
+.penaltyReadout small {
+  color: #eadfbe;
+  line-height: 1.55;
+}
+
+.howPage {
+  padding-top: 18px;
+}
+
+.howHero,
+.howRulesBlock {
+  border: 1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(242, 203, 91, 0.06), transparent 22%),
+    linear-gradient(180deg, rgba(188, 48, 72, 0.08), transparent 100%),
+    var(--panel);
+  box-shadow: var(--shadow);
+}
+
+.howHero {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, 0.75fr);
+  gap: 22px;
+  padding: 34px;
+  margin-bottom: 22px;
+}
+
+.howHero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgba(13, 3, 5, 0.82), rgba(13, 3, 5, 0.48)),
+    url("./assets/how-play-1.jpg") center / cover no-repeat;
+  opacity: 0.34;
+}
+
+.howHeroCopy,
+.howHeroStats {
+  position: relative;
+  z-index: 1;
+}
+
+.howHeroCopy h1 {
+  max-width: 860px;
+  margin: 10px 0 14px;
+  font-size: clamp(36px, 6vw, 72px);
+  line-height: 0.98;
+}
+
+.howHeroCopy p {
+  max-width: 760px;
+  color: #eadfbe;
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.howHeroStats {
+  display: grid;
+  align-content: end;
+  gap: 12px;
+}
+
+.howHeroStats span {
+  display: grid;
+  gap: 6px;
+  min-height: 92px;
+  padding: 16px;
+  border: 1px solid rgba(242, 203, 91, 0.18);
+  background: rgba(17, 9, 11, 0.82);
+  color: #eadfbe;
+}
+
+.howHeroStats strong {
+  color: #fff3d1;
+  font-size: 24px;
+}
+
+.howBannerStack {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 22px;
+}
+
+.howBannerStack img {
+  width: 100%;
+  display: block;
+  border: 1px solid rgba(242, 203, 91, 0.2);
+  background: rgba(17, 9, 11, 0.82);
+  box-shadow: var(--shadow);
+}
+
+.howBannerStack img:first-child {
+  aspect-ratio: 899 / 283;
+  object-fit: cover;
+}
+
+.howBannerStack img:last-child {
+  aspect-ratio: 1280 / 853;
+  object-fit: cover;
+  object-position: center;
+}
+
+.howRulesBlock {
+  padding: 24px;
+}
+
+.ruleList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: play-rules;
+}
+
+.ruleList li {
+  position: relative;
+  min-height: 154px;
+  padding: 18px 18px 18px 58px;
+  border: 1px solid rgba(242, 203, 91, 0.14);
+  background:
+    linear-gradient(135deg, rgba(155, 23, 52, 0.22), transparent 58%),
+    rgba(18, 10, 11, 0.84);
+  color: #eadfbe;
+  line-height: 1.6;
+  counter-increment: play-rules;
+}
+
+.ruleList li::before {
+  content: counter(play-rules);
+  position: absolute;
+  left: 18px;
+  top: 18px;
+  display: grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  border: 1px solid rgba(242, 203, 91, 0.36);
+  background: rgba(242, 203, 91, 0.14);
+  color: #fff3d1;
+  font-family: "IBM Plex Mono", monospace;
+  font-weight: 700;
+}
+
+.ruleList strong {
+  display: block;
+  margin-bottom: 8px;
+  color: #fff3d1;
+  font-size: 16px;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.62);
+    opacity: 0.94;
+  }
+  100% {
+    transform: scale(1.16);
+    opacity: 0;
+  }
+}
+
+@keyframes slowSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slowSpinReverse {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+@media (max-width: 1080px) {
+  .heroBand,
+  .howHero,
+  .ruleList,
+  .gameGrid,
+  .infoGrid,
+  .tradeGrid,
+  .claimBand,
+  .metricGrid,
+  .metricGrid.compact,
+  .configGrid,
+  .mintVisualBand,
+  .mintMiniNotes {
+    grid-template-columns: 1fr;
+  }
+
+  .sectionHead,
+  .heroStatus,
+  .headerActions,
+  .shellHeader {
+    align-items: stretch;
+  }
+
+  .shellHeader {
+    position: static;
+    flex-direction: column;
+  }
+
+  .howHero {
+    padding: 26px;
+  }
+
+  .howHeroStats {
+    align-content: stretch;
+  }
+
+  .howBannerStack img:last-child {
+    aspect-ratio: 1280 / 853;
+  }
+
+  .heroPoster .coreNode {
+    left: 16px;
+    right: 16px;
+    bottom: 16px;
+    width: auto;
+  }
+
+  .goalBox {
+    width: calc(100% - 24px);
+    margin-top: 286px;
+  }
+
+  .penaltyStage {
+    min-height: 730px;
+  }
+
+  .runnerA {
+    left: 7%;
+    top: 132px;
+  }
+
+  .runnerB {
+    right: 9%;
+    top: 132px;
+  }
+
+  .runnerC {
+    left: 38%;
+    top: 82px;
+  }
+
+}
