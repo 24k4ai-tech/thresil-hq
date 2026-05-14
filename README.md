@@ -47,7 +47,11 @@ Current build focus:
 
 ## Verification Status
 
-- The arcade contracts in this repository are the active site-and-protocol build.
+- GitHub `main` is the public source for the active site-and-protocol build.
+- Sourcify mainnet verification:
+  - Exact match: Launcher, Token, Last-buyer pot, Penalty draw, LP club.
+  - Match: V4 hook, HookDeployer.
+- Etherscan verification needs an `ETHERSCAN_API_KEY`; no Etherscan key is stored in this repository.
 
 ## Local Development
 
