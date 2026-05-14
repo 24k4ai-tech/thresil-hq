@@ -18,6 +18,26 @@ This repository contains:
 
 ## Mainnet Addresses
 
+Live on Ethereum mainnet:
+
+- Launcher: `0x124A3eC8a2ccBab1523e998aC851474824529180`
+- Token: `0x1De9c0F378f66F6E7b5699dC5C2F18E19d567AbD`
+- Last-buyer pot: `0x949B4B5B33df62B26CE9aD97102C56FF8d3dDBC6`
+- Penalty draw: `0xb5Cf9Dc1DA57Dd87EE7Db2962AfDcC143f0AF26C`
+- LP club: `0x4B7b39D6B8702888E18148109Becc4734A880659`
+- V4 hook: `0x6C679d3f54366f2431393c0824F922CbDFAa05cc`
+- API tax wallet: `0x830EE35dC25Bfc3b9E93470c7BE1d4929F888355`
+- Mainnet v4 pool id: `0x76316794f14c0d13a5688dc4d5333ed06e802ea2889f9537a205c5ef7375a461`
+
+Launch:
+
+- Launched at block `25094022`, timestamp `2026-05-14 14:38:11 UTC`.
+- Launch transaction: `0x09018cccf53da8aa844892483c0bcb0657751a18289f68270ffc0a9dea0701f1`
+- Dev seed buy: `0xc3635edf88eeee43360e7e1d09966f364b7b65849703ffc3ce28fc213f817cba`
+- Pool initialization: `0x4ae5cc9225ec542c6da5d4de9d8eebe221bffd17e839e27e4358b133208c9a8c`
+- Seed LP mint: `0xeed8cac0c7e650fbd148ac5b5f1a0c94b8b043da2ff83bcd37df0ec9aadc13c9`
+- Seed LP NFT `272160` was minted to `0x000000000000000000000000000000000000dEaD`.
+
 Current build focus:
 
 - `src/FTMonsterArcadeLauncher.sol` keeps the mint rail first and drives a 17 ETH gross SATO-style reserve curve.
