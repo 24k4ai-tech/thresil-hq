@@ -1,6 +1,6 @@
 const { ethers } = window;
 
-const CONFIG_KEY = "thresil.arcade.config.v1";
+const CONFIG_KEY = "thresil.arcade.config.v2";
 const RPC_URLS = [
   "https://ethereum.publicnode.com",
   "https://eth.llamarpc.com",
@@ -10,10 +10,10 @@ const COUNTDOWN_REFRESH_MS = 1000;
 const CHAIN_REFRESH_MS = 12000;
 
 const DEFAULT_CONFIG = {
-  launcher: "0x124A3eC8a2ccBab1523e998aC851474824529180",
-  token: "0x1De9c0F378f66F6E7b5699dC5C2F18E19d567AbD",
-  jackpot: "0x949B4B5B33df62B26CE9aD97102C56FF8d3dDBC6",
-  draw: "0xb5Cf9Dc1DA57Dd87EE7Db2962AfDcC143f0AF26C",
+  launcher: "0x828318182b294E9AFf2437e7Dc4810Aa955Bb764",
+  token: "0xcB16cA9d5c6F9090A1b56D29ACb31D764bc2ed7c",
+  jackpot: "0x107E0b771877e560B846AEcA0cE3b15D83592091",
+  draw: "0x350E881320d890B5EdD83be5c24CE0EDEf185f55",
 };
 
 const ERC20_BALANCE_ABI = ["function balanceOf(address account) view returns (uint256)"];

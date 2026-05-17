@@ -20,23 +20,31 @@ This repository contains:
 
 Live on Ethereum mainnet:
 
-- Launcher: `0x124A3eC8a2ccBab1523e998aC851474824529180`
-- Token: `0x1De9c0F378f66F6E7b5699dC5C2F18E19d567AbD`
-- Last-buyer pot: `0x949B4B5B33df62B26CE9aD97102C56FF8d3dDBC6`
-- Penalty draw: `0xb5Cf9Dc1DA57Dd87EE7Db2962AfDcC143f0AF26C`
-- LP club: `0x4B7b39D6B8702888E18148109Becc4734A880659`
-- V4 hook: `0x6C679d3f54366f2431393c0824F922CbDFAa05cc`
+- Launcher: `0x828318182b294E9AFf2437e7Dc4810Aa955Bb764`
+- Token: `0xcB16cA9d5c6F9090A1b56D29ACb31D764bc2ed7c`
+- Last-buyer pot: `0x107E0b771877e560B846AEcA0cE3b15D83592091`
+- Penalty draw: `0x350E881320d890B5EdD83be5c24CE0EDEf185f55`
+- LP club: `0x78893A2C26F57849B163f09D11f404d9E23A593e`
+- V4 hook: `0xfBaFDa29fc1Ec863C10481270E24FEB1853CC5cc`
+- Hook deployer: `0x69F1d0D13F48B8186dc418c1189B42E9926402Ae`
 - API tax wallet: `0x830EE35dC25Bfc3b9E93470c7BE1d4929F888355`
-- Mainnet v4 pool id: `0x76316794f14c0d13a5688dc4d5333ed06e802ea2889f9537a205c5ef7375a461`
+- Mainnet v4 pool id: `0x17cb7ce5b84d43b804145ece8cf5c81c6650cb1cd229474a6901124bd4518270`
 
 Launch:
 
-- Launched at block `25094022`, timestamp `2026-05-14 14:38:11 UTC`.
-- Launch transaction: `0x09018cccf53da8aa844892483c0bcb0657751a18289f68270ffc0a9dea0701f1`
-- Dev seed buy: `0xc3635edf88eeee43360e7e1d09966f364b7b65849703ffc3ce28fc213f817cba`
-- Pool initialization: `0x4ae5cc9225ec542c6da5d4de9d8eebe221bffd17e839e27e4358b133208c9a8c`
-- Seed LP mint: `0xeed8cac0c7e650fbd148ac5b5f1a0c94b8b043da2ff83bcd37df0ec9aadc13c9`
-- Seed LP NFT `272160` was minted to `0x000000000000000000000000000000000000dEaD`.
+- Staged deploy txs:
+  - Launcher: `0x15e6e30bcbd72da8885d60af1fa079660caaf3c6c22eaef93a6b55f0436f5fc6`
+  - Last-buyer pot: `0x61af714f5432717ea0fe2c4a40c5c9c6bffbc9d27743bf0388c929a6f4ae4ac1`
+  - Penalty draw: `0xacbdcdb138eb393464a79b85320f35906e1db415443e4b73b220957f903035c4`
+  - Hook deployer: `0x58ed2ef6296317aad20a7905b75bf3f1f86c273263e886a423524c19fe9a7aa5`
+  - Hook deploy call: `0x437e63ca34d25d88c0525bf224498e308328213f632a08c098c7d1a2434ead8e`
+  - LP club: `0xb0df6112f9a92b76718f952f4896a00f49a78cd28abdbe82a3d976033240c5d3`
+- Launched at block `25117559`, timestamp `2026-05-17 21:20:11 UTC`.
+- Launch transaction: `0x4fa5e68f138b7260cef22083c6af5c562ad045dfab123c56bfe8f13cecf4fad2`
+- Dev seed buy: `0xdc60ef6db00642db32c715ba21db596e8e7c914842915dc0b5dc3be1dfaaa533`
+- Pool initialization: `0x03ddfd10cc1b30d65b98a810c6b3300cfb6e74080ffe7112784b0de71890f7d6`
+- Seed LP mint tx: `0x8f16364fc4c7ff1b572e5811c1dfd3a27dbf3c7d2cf55ba536542be14e13791f`
+- Seed LP recipient: `0x000000000000000000000000000000000000dEaD`
 
 Current build focus:
 

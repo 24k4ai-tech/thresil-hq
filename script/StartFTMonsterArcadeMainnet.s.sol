@@ -21,9 +21,9 @@ interface IPermit2Mainnet {
 }
 
 contract StartFTMonsterArcadeMainnet is Script {
-    address private constant LAUNCHER = 0x124A3eC8a2ccBab1523e998aC851474824529180;
-    address private constant TOKEN = 0x1De9c0F378f66F6E7b5699dC5C2F18E19d567AbD;
-    address private constant HOOK = 0x6C679d3f54366f2431393c0824F922CbDFAa05cc;
+    address private constant LAUNCHER = 0x828318182b294E9AFf2437e7Dc4810Aa955Bb764;
+    address private constant TOKEN = 0xcB16cA9d5c6F9090A1b56D29ACb31D764bc2ed7c;
+    address private constant HOOK = 0xfBaFDa29fc1Ec863C10481270E24FEB1853CC5cc;
     address private constant POOL_MANAGER = 0x000000000004444c5dc75cB358380D2e3dE08A90;
     address private constant POSITION_MANAGER = 0xbD216513d74C8cf14cf4747E6AaA6420FF64ee9e;
     address private constant PERMIT2 = 0x000000000022D473030F116dDEE9F6B43aC78BA3;

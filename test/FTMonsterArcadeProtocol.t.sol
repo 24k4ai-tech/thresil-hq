@@ -50,13 +50,13 @@ contract FTMonsterArcadeProtocolTest is Test {
         assertEq(address(launcher.jackpot()), address(jackpot));
         assertEq(address(launcher.penaltyDraw()), address(penaltyDraw));
         assertEq(launcher.CURVE_CLOSE_GROSS_ETH(), 17 ether);
-        assertEq(launcher.CURVE_CLOSE_NET_ETH(), 15_980_000_000_000_000_000);
-        assertEq(launcher.currentApiFeeBps(), 200);
-        assertEq(launcher.currentJackpotFeeBps(), 100);
-        assertEq(launcher.currentLpClubFeeBps(), 100);
-        assertEq(launcher.currentPenaltyDrawFeeBps(), 200);
-        assertEq(launcher.currentBaseTotalFeeBps(), 600);
-        assertEq(launcher.currentTotalFeeBps(), 600);
+        assertEq(launcher.CURVE_CLOSE_NET_ETH(), 16_716_100_000_000_000_000);
+        assertEq(launcher.currentApiFeeBps(), 100);
+        assertEq(launcher.currentJackpotFeeBps(), 17);
+        assertEq(launcher.currentLpClubFeeBps(), 17);
+        assertEq(launcher.currentPenaltyDrawFeeBps(), 33);
+        assertEq(launcher.currentBaseTotalFeeBps(), 167);
+        assertEq(launcher.currentTotalFeeBps(), 167);
         assertEq(launcher.currentFuseWindowSeconds(), 30 minutes);
         assertEq(launcher.FUSE_TIER_ONE_BPS(), 500);
         assertEq(launcher.FUSE_TIER_TWO_BPS(), 1_000);
@@ -82,7 +82,7 @@ contract FTMonsterArcadeProtocolTest is Test {
         fresh.launch();
     }
 
-    function testEarlyBuyRoutesSixPercent() public {
+    function testEarlyBuyRoutesOnePointSixSevenPercent() public {
         uint256 taxBefore = taxWallet.balance;
         uint256 jackpotBefore = address(jackpot).balance;
         uint256 drawBefore = address(penaltyDraw).balance;
@@ -90,10 +90,10 @@ contract FTMonsterArcadeProtocolTest is Test {
         vm.prank(alice);
         launcher.buyGenesis{value: 1 ether}(alice);
 
-        assertEq(taxWallet.balance - taxBefore, 0.02 ether);
-        assertEq(address(jackpot).balance - jackpotBefore, 0.01 ether);
-        assertEq(address(lpClub).balance, 0.01 ether);
-        assertEq(address(penaltyDraw).balance - drawBefore, 0.02 ether);
+        assertEq(taxWallet.balance - taxBefore, 0.01 ether);
+        assertEq(address(jackpot).balance - jackpotBefore, 0.0017 ether);
+        assertEq(address(lpClub).balance, 0.0017 ether);
+        assertEq(address(penaltyDraw).balance - drawBefore, 0.0033 ether);
         assertGt(token.balanceOf(alice), 0);
     }
 
@@ -131,12 +131,12 @@ contract FTMonsterArcadeProtocolTest is Test {
         vm.prank(alice);
         launcher.buyGenesis{value: 1 ether}(alice);
 
-        assertEq(address(lpClub).balance, 0.01 ether);
+        assertEq(address(lpClub).balance, 0.0017 ether);
         assertEq(lpClub.undistributedRewards(), 0);
 
         vm.prank(address(hookReceiver));
         lpClub.recordLiquidityAdded(bob, 1 ether);
-        assertEq(lpClub.undistributedRewards(), 0.01 ether);
+        assertEq(lpClub.undistributedRewards(), 0.0017 ether);
 
         vm.prank(alice);
         launcher.buyGenesis{value: 1 ether}(alice);
@@ -145,8 +145,8 @@ contract FTMonsterArcadeProtocolTest is Test {
         vm.prank(bob);
         uint256 claimed = lpClub.claim();
 
-        assertApproxEqAbs(claimed, 0.02 ether, 1);
-        assertApproxEqAbs(bob.balance - bobBefore, 0.02 ether, 1);
+        assertApproxEqAbs(claimed, 0.0034 ether, 1);
+        assertApproxEqAbs(bob.balance - bobBefore, 0.0034 ether, 1);
     }
 
     function grossEthOutFor(uint256 tokenAmount) internal view returns (uint256 grossEthOut) {
@@ -179,16 +179,16 @@ contract FTMonsterArcadeProtocolTest is Test {
     function testPostWindowApiCanBeAdjustedAndFrozen() public {
         vm.warp(block.timestamp + 77 minutes + 1);
 
-        assertEq(launcher.currentApiFeeBps(), 80);
+        assertEq(launcher.currentApiFeeBps(), 13);
 
-        launcher.setPostWindowApiFeeBps(50);
-        assertEq(launcher.currentApiFeeBps(), 50);
-        assertEq(launcher.currentBaseTotalFeeBps(), 450);
+        launcher.setPostWindowApiFeeBps(10);
+        assertEq(launcher.currentApiFeeBps(), 10);
+        assertEq(launcher.currentBaseTotalFeeBps(), 77);
 
-        launcher.freezeAndRenounce(80);
+        launcher.freezeAndRenounce(13);
         assertEq(launcher.owner(), address(0));
         assertTrue(launcher.controlsFrozen());
-        assertEq(launcher.currentApiFeeBps(), 80);
+        assertEq(launcher.currentApiFeeBps(), 13);
 
         vm.expectRevert(FTMonsterArcadeLauncher.NotOwner.selector);
         launcher.setPostWindowApiFeeBps(30);
@@ -221,10 +221,10 @@ contract FTMonsterArcadeProtocolTest is Test {
         vm.prank(bob);
         launcher.buyGenesis{value: 1 ether}(bob);
 
-        assertEq(alice.balance - aliceBefore, 0.003 ether);
+        assertEq(alice.balance - aliceBefore, 0.00051 ether);
         assertEq(jackpot.lastWinner(), alice);
-        assertEq(jackpot.lastPayout(), 0.003 ether);
-        assertEq(address(jackpot).balance, 0.017 ether);
+        assertEq(jackpot.lastPayout(), 0.00051 ether);
+        assertEq(address(jackpot).balance, 0.00289 ether);
         assertEq(jackpot.lastBuyer(), bob);
     }
 
@@ -348,10 +348,10 @@ contract FTMonsterArcadeProtocolTest is Test {
         assertEq(launcher.curveEth(), launcher.CURVE_CLOSE_NET_ETH());
         assertEq(launcher.curveReserve(), launcher.CURVE_CLOSE_NET_ETH());
         assertEq(launcher.curveTokensRemaining(), 0);
-        assertEq(taxWallet.balance - taxBefore, 0.34 ether);
-        assertEq(address(jackpot).balance - jackpotBefore, 0.17 ether);
-        assertEq(address(lpClub).balance, 0.17 ether);
-        assertEq(address(penaltyDraw).balance - drawBefore, 0.34 ether);
+        assertEq(taxWallet.balance - taxBefore, 0.17 ether);
+        assertEq(address(jackpot).balance - jackpotBefore, 0.0289 ether);
+        assertEq(address(lpClub).balance, 0.0289 ether);
+        assertEq(address(penaltyDraw).balance - drawBefore, 0.0561 ether);
     }
 
     function testSellAfterSeventeenFillBurnsTokensAndDoesNotReopenCurve() public {

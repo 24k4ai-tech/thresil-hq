@@ -75,8 +75,8 @@
           <div class="heroChips">
             <span>Opening curve closes after 17 ETH gross buy-in</span>
             <span>SATO reserve path</span>
-            <span>First 77 minutes: every trade tax is 6.0%</span>
-            <span>After 77 minutes: API tax can only be 0.0%-0.8%</span>
+            <span>First 77 minutes: every trade tax is 1.67%</span>
+            <span>After 77 minutes: API tax can only be 0.0%-0.13%</span>
             <span>Fuse tax only appears on sharp sell drawdowns</span>
           </div>
         </div>
@@ -417,9 +417,9 @@
           <span>Trade tax</span>
           <h3>How the opening split works</h3>
           <p class="compactText">
-            For the first 77 minutes, every buy and sell pays 6.0% total: 2.0% API, 1.0% last-buyer pot,
-            1.0% official LP rewards, and 2.0% penalty draw. After 77 minutes, only the API piece can change, and it
-            can never be higher than 0.8%.
+            For the first 77 minutes, every buy and sell pays 1.67% total: 1.0% API, 0.17% last-buyer pot,
+            0.17% official LP rewards, and 0.33% penalty draw. After 77 minutes, only the API piece can change, and it
+            can never be higher than 0.13%.
           </p>
         </article>
         <article class="infoCard">
@@ -508,7 +508,7 @@
             </div>
             <p class="compactText actionHint">
               This helper pairs ETH with the matching 777X amount from the live v4 pool price. LP rewards only count
-              paired official-pool positions; single-sided ETH does not earn the LP rail. The 1.0% trade rail and the
+              paired official-pool positions; single-sided ETH does not earn the LP rail. The 0.17% LP trade rail and the
               LP slice of fuse tax are claimable from LPClub.
             </p>
           </section>
@@ -551,6 +551,6 @@
     </main>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="./app.js?v=20260514-burn-mobile"></script>
+    <script src="./app.js?v=20260518-api1-mainnet"></script>
   </body>
 </html>

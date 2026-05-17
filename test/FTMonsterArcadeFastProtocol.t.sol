@@ -74,9 +74,9 @@ contract FTMonsterArcadeFastProtocolTest is Test {
         assertGt(penaltyDraw.lastPayout(), 0);
 
         vm.warp(launchTs + 78);
-        launcher.setPostWindowApiFeeBps(50);
-        assertEq(launcher.currentApiFeeBps(), 50);
-        launcher.freezeAndRenounce(80);
+        launcher.setPostWindowApiFeeBps(10);
+        assertEq(launcher.currentApiFeeBps(), 10);
+        launcher.freezeAndRenounce(13);
         assertEq(launcher.owner(), address(0));
         assertTrue(launcher.controlsFrozen());
 
