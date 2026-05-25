@@ -6,7 +6,7 @@
     <title>How To Play | Oracle777</title>
     <meta
       name="description"
-      content="How to play Oracle777: buy 777X, burn into the penalty draw, hold the last-buyer position, and understand the LP and fuse rewards."
+      content="How to play Oracle777 Flap penalty mode: buy 777X on Flap, voluntarily dead-burn to shoot, and let the vault pay 30% of the pot per 17-minute round."
     />
     <link rel="canonical" href="https://www.777x.space/how-to-play.html" />
     <link rel="image_src" href="https://www.777x.space/assets/how-play-2.jpg" />
@@ -17,7 +17,7 @@
     <meta property="og:title" content="How To Play Oracle777" />
     <meta
       property="og:description"
-      content="Buy 777X, burn into the 17-minute penalty draw, hold official LP, and chase the 45-minute last-buyer pot."
+      content="Buy 777X on Flap, voluntarily dead-burn to shoot, and let the vault pay 30% of the pot per 17-minute round."
     />
     <meta property="og:url" content="https://www.777x.space/how-to-play.html" />
     <meta property="og:image" content="https://www.777x.space/assets/how-play-2.jpg" />
@@ -29,7 +29,7 @@
     <meta name="twitter:title" content="How To Play Oracle777" />
     <meta
       name="twitter:description"
-      content="Buy 777X, burn into the 17-minute penalty draw, hold official LP, and chase the 45-minute last-buyer pot."
+      content="Buy 777X on Flap, voluntarily dead-burn to shoot, and let the vault pay 30% of the pot per 17-minute round."
     />
     <meta name="twitter:image" content="https://www.777x.space/assets/how-play-2.jpg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -51,12 +51,12 @@
         </div>
         <div class="brandCopy">
           <strong>Oracle777</strong>
-          <small>THRESIL football arcade curve</small>
+          <small>Flap penalty arcade</small>
         </div>
       </div>
       <div class="headerActions">
         <a href="./">Arcade</a>
-        <a href="./#mintPanel">Mint Board</a>
+        <a href="./#flapPenalty">Penalty Vault</a>
         <a href="https://x.com/Oracle_777X" target="_blank" rel="noopener noreferrer">X</a>
         <a href="https://github.com/24k4ai-tech/thresil-hq" target="_blank" rel="noopener noreferrer">GitHub</a>
       </div>
@@ -66,17 +66,17 @@
       <section class="howHero">
         <div class="howHeroCopy">
           <span class="eyebrow">How To Play</span>
-          <h1>Buy 777X. Burn to shoot. Hold the last buyer spot.</h1>
+          <h1>Buy on Flap. Burn to shoot. Win from the penalty pot.</h1>
           <p>
-            Oracle777 is a football arcade built around one simple loop: trades feed ETH pots, burns cut supply, and
-            active players chase outsized rewards. The contract rules are public. The game is risky. Nothing is
-            guaranteed.
+            Oracle777 penalty mode is intentionally simple: Flap launches the token, trade tax feeds the BNB vault, and
+            only users who voluntarily send 777X to the dead address enter the 17-minute Chainlink VRF penalty round. The game is
+            risky. Nothing is guaranteed.
           </p>
         </div>
         <div class="howHeroStats" aria-label="Core timers">
-          <span><strong>17 ETH</strong> opening curve fill</span>
+          <span><strong>3%</strong> target buy/sell tax</span>
           <span><strong>17 min</strong> penalty draw round</span>
-          <span><strong>45 min</strong> last-buyer timer</span>
+          <span><strong>30%</strong> pot paid per round</span>
         </div>
       </section>
 
@@ -91,51 +91,48 @@
             <span class="sectionKicker">Rules</span>
             <h2>Plain Version</h2>
           </div>
-          <span class="liveBadge">Onchain arcade</span>
+          <span class="liveBadge">Flap penalty mode</span>
         </div>
 
         <ol class="ruleList">
           <li>
-            <strong>Buy on the opening curve.</strong>
-            The first buy lane runs until the curve reaches 17 ETH gross buy-in. After that, this opening buy lane
-            closes forever.
+            <strong>Buy 777X through Flap.</strong>
+            Flap handles the launch rail, trading, and tax-token path. Oracle777 does not need its own bonding curve in
+            this mode.
           </li>
           <li>
-            <strong>Trades fund the game pots.</strong>
-            During the first 77 minutes, every buy and sell pays 1.67% total: 1.0% API, 0.17% last-buyer pot, 0.17%
-            official LP rewards, and 0.33% penalty draw.
+            <strong>Trade tax feeds the vault.</strong>
+            The target design is 3% buy tax and 3% sell tax. Flap tax inflow goes into the Oracle777 penalty vault.
           </li>
           <li>
-            <strong>Only the API rail can change later.</strong>
-            After the first 77 minutes, the API rail can only move between 0.0% and 0.13%. The last-buyer, LP, and
-            penalty rails stay fixed by contract.
+            <strong>Dev/API share is temporary.</strong>
+            During the first 77 minutes, one third of vault inflow goes to the dev/API wallet. After that, the dev share
+            ends automatically and new vault inflow remains in the penalty pot.
           </li>
           <li>
-            <strong>Burn 777X to enter the penalty draw.</strong>
-            Every burn creates an entry in the current 17-minute round. Bigger burns get more weight, but smaller
-            wallets still have a real shot because the weight curve is not linear. When the timer ends, the first
-            onchain touch locks a future block seed; a later touch pays the winner.
+            <strong>Dead-burn 777X to shoot.</strong>
+            Participation is voluntary. Pressing shoot transfers your selected 777X to the dead address and records your
+            weighted shot in the active round.
           </li>
           <li>
-            <strong>LP holders get a clear boost.</strong>
-            If your wallet holds an official 777X LP position, the contract can add a small boost to your penalty draw
-            weight and share LP rewards with you. No LP means no LP reward; rewards wait in the LP contract until
-            official LP exists.
+            <strong>Bigger burns help, but not linearly.</strong>
+            Shot weight uses the square root of the burned amount. A larger burn has better odds, but it does not get a
+            straight-line advantage over smaller wallets.
           </li>
           <li>
-            <strong>The last buyer can win ETH.</strong>
-            If you are the latest qualifying buyer and nobody buys again for 45 minutes, the next buy, sell, or burn
-            triggers the ETH payout to you.
+            <strong>Returning shooters get a small transparent boost.</strong>
+            The vault can add a capped boost based on how long the wallet has been an active shooter. This is not hidden
+            AI scoring and not an offchain profile.
           </li>
           <li>
-            <strong>Sharp sell drops trigger the fuse.</strong>
-            If the price falls under 90%, 80%, or 40% of the recent high, extra sell fees appear: 5%, 10%, or 15%.
-            That extra fuse fee is split 80% to the penalty draw and 20% to official LP rewards.
+            <strong>Each settled round pays 30% of the available pot.</strong>
+            When a 17-minute round ends, the next onchain touch requests Chainlink VRF. The VRF callback pays the winner
+            automatically for normal wallets.
           </li>
           <li>
-            <strong>After the curve is full, sell-back burns tokens.</strong>
-            Before 17 ETH is filled, tokens sold back to the curve return to opening inventory. After the fill, the buy
-            rail is closed, so those returned 777X are burned instead. The token cannot be freely minted again.
+            <strong>No last-buyer, no fuse, no LP reward in this mode.</strong>
+            Those older arcade modules are hidden on the site. The Flap version keeps the core game as penalty only so
+            the rules stay readable.
           </li>
         </ol>
       </section>

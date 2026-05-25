@@ -6,7 +6,7 @@
     <title>Oracle777 | 777X.SPACE</title>
     <meta
       name="description"
-      content="Oracle777 is a THRESIL football arcade with a 17 ETH SATO-style mint rail, a SOTO holder claim lane, a last-buyer pot, and a burn-to-shoot penalty draw."
+      content="Oracle777 is a Flap-launched penalty arcade: voluntary 777X dead-burn shots, 17-minute rounds, and 30% automatic pot payouts."
     />
     <link rel="canonical" href="https://www.777x.space/" />
     <link rel="image_src" href="https://www.777x.space/assets/oracle777-og-card-wide.jpg" />
@@ -15,7 +15,7 @@
     <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="Oracle777" />
     <meta property="og:title" content="Oracle777 | 777X.SPACE" />
-    <meta property="og:description" content="17 ETH mint rail. Claim the SOTO lane. Hold the last buyer spot. Burn into the penalty draw." />
+    <meta property="og:description" content="Voluntary dead-burn shots. 17-minute rounds. 30% automatic penalty pot payouts." />
     <meta property="og:url" content="https://www.777x.space/" />
     <meta property="og:image" content="https://www.777x.space/assets/oracle777-og-card-wide.jpg" />
     <meta property="og:image:url" content="https://www.777x.space/assets/oracle777-og-card-wide.jpg" />
@@ -27,7 +27,7 @@
     <meta itemprop="image" content="https://www.777x.space/assets/oracle777-og-card-wide.jpg" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Oracle777 | 777X.SPACE" />
-    <meta name="twitter:description" content="17 ETH mint rail. Claim the SOTO lane. Hold the last buyer spot. Burn into the penalty draw." />
+    <meta name="twitter:description" content="Voluntary dead-burn shots. 17-minute rounds. 30% automatic penalty pot payouts." />
     <meta name="twitter:image" content="https://www.777x.space/assets/oracle777-og-card-wide.jpg" />
     <meta property="og:updated_time" content="2026-05-14T12:50:00Z" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -50,7 +50,7 @@
         </div>
         <div class="brandCopy">
           <strong>Oracle777</strong>
-          <small>THRESIL football arcade curve</small>
+          <small>Flap penalty arcade</small>
         </div>
       </div>
       <div class="headerActions">
@@ -66,18 +66,18 @@
       <section class="heroBand">
         <div class="heroCopy">
           <span class="eyebrow">THRESIL / Oracle777</span>
-          <h1>Mint first. Hold the last buyer spot. Burn to take the penalty.</h1>
+          <h1>Burn 777X into the dead address. Take the penalty.</h1>
           <p>
-            Oracle777 keeps the SATO mint rail first, opens a fixed SOTO holder claim lane, pays the last buyer pot on
-            the next touch, and turns every burn into one live penalty entry. Penalty rounds lock a future block seed
-            before payout, keeping settlement onchain and harder to reroll.
+            Oracle777 keeps Flap as the launch rail and moves the game into one clear loop: voluntary dead-burn shots,
+            17-minute penalty rounds, Chainlink VRF, and 30% automatic pot payouts. Tax inflow, later shots, or any public poke can
+            advance settlement.
           </p>
           <div class="heroChips">
-            <span>Opening curve closes after 17 ETH gross buy-in</span>
-            <span>SATO reserve path</span>
-            <span>First 77 minutes: every trade tax is 1.67%</span>
-            <span>After 77 minutes: API tax can only be 0.0%-0.13%</span>
-            <span>Fuse tax only appears on sharp sell drawdowns</span>
+            <span>Flap Tax Token + Custom Vault</span>
+            <span>3% buy/sell tax target</span>
+            <span>Early dev share ends after 77 minutes</span>
+            <span>Every round requests VRF and pays 30% of available BNB pot</span>
+            <span>Old arcade modules are hidden, not deleted</span>
           </div>
         </div>
         <div class="heroVisual">
@@ -99,7 +99,169 @@
         </div>
       </section>
 
-      <section class="consoleCard mintCard" id="mintPanel">
+      <section class="consoleCard flapPenaltyCard" id="flapPenalty">
+        <div class="sectionDecal drawDecal" aria-hidden="true"></div>
+        <div class="sectionHead">
+          <div>
+            <span class="sectionKicker">1 / Flap Penalty Vault</span>
+            <h2>Burn To Shoot</h2>
+          </div>
+          <span class="liveBadge">30% pot / 17m round</span>
+        </div>
+
+        <div class="metricGrid">
+          <article class="metric">
+            <span>Available pot</span>
+            <strong id="flapPot">-</strong>
+          </article>
+          <article class="metric">
+            <span>Next payout quote</span>
+            <strong id="flapPayoutQuote">-</strong>
+          </article>
+          <article class="metric">
+            <span>Round</span>
+            <strong id="flapRound">-</strong>
+          </article>
+          <article class="metric">
+            <span>Round status</span>
+            <strong id="flapCountdown">-</strong>
+          </article>
+          <article class="metric">
+            <span>Entries</span>
+            <strong id="flapEntries">-</strong>
+          </article>
+          <article class="metric">
+            <span>Current weight</span>
+            <strong id="flapWeight">-</strong>
+          </article>
+          <article class="metric">
+            <span>Prev winner</span>
+            <strong id="flapLastWinner">-</strong>
+          </article>
+          <article class="metric">
+            <span>Prev payout</span>
+            <strong id="flapLastPayout">-</strong>
+          </article>
+        </div>
+
+        <div class="tradeGrid penaltyMainGrid">
+          <section class="tradePanel">
+            <div class="tradeHead">
+              <span>Penalty shot</span>
+              <strong id="flapTokenSymbol">777X</strong>
+            </div>
+            <div class="metricGrid compact">
+              <article class="metric">
+                <span>My balance</span>
+                <strong id="flapMyBalance">-</strong>
+              </article>
+              <article class="metric">
+                <span>Allowance</span>
+                <strong id="flapAllowance">-</strong>
+              </article>
+              <article class="metric">
+                <span>Shooter age boost</span>
+                <strong id="flapBoost">-</strong>
+              </article>
+            </div>
+
+            <div class="sliderWrap">
+              <div class="sliderHead">
+                <span>Dead-burn from wallet balance</span>
+                <strong id="flapBurnPercentValue">0.0%</strong>
+              </div>
+              <input id="flapBurnPercent" type="range" min="0" max="100" step="0.1" value="0" />
+            </div>
+            <div class="readout">
+              <span>Selected burn</span>
+              <strong id="flapBurnPreview">-</strong>
+            </div>
+            <label class="field">
+              <span>Exact burn override (optional)</span>
+              <input id="flapBurnAmount" value="0" inputmode="decimal" />
+            </label>
+            <div class="buttonRow">
+              <button id="flapApproveBtn" type="button">Approve</button>
+              <button id="flapShootBtn" type="button">Burn Into Penalty</button>
+              <button id="flapPokeBtn" type="button">Poke Settlement</button>
+            </div>
+            <p class="compactText actionHint">
+              Participation is voluntary. The selected 777X is transferred to the dead address and recorded as a weighted
+              shot. Payout does not require winner claim for normal wallets.
+            </p>
+          </section>
+
+          <section class="tradePanel">
+            <div class="tradeHead">
+              <span>Round theatre</span>
+              <strong>VRF result later</strong>
+            </div>
+            <div class="penaltyStage compactPenaltyStage" id="flapPenaltyStage">
+              <div class="chaseScene" aria-hidden="true">
+                <div class="pitchLines"></div>
+                <div class="cartoonPlayer runner runnerA" data-flap-runner data-star="cr7">
+                  <span class="head"></span>
+                  <span class="body"></span>
+                  <span class="arm armA"></span>
+                  <span class="arm armB"></span>
+                  <span class="leg legA"></span>
+                  <span class="leg legB"></span>
+                </div>
+                <div class="cartoonPlayer runner runnerB" data-flap-runner data-star="messi">
+                  <span class="head"></span>
+                  <span class="body"></span>
+                  <span class="arm armA"></span>
+                  <span class="arm armB"></span>
+                  <span class="leg legA"></span>
+                  <span class="leg legB"></span>
+                </div>
+              </div>
+              <div class="goalBox">
+                <div class="goalNet"></div>
+                <div class="goalKeeper" id="flapGoalKeeper">
+                  <span class="keeperHead"></span>
+                  <span class="keeperBody"></span>
+                  <span class="keeperArm keeperArmA"></span>
+                  <span class="keeperArm keeperArmB"></span>
+                </div>
+                <div class="penaltyBall" id="flapPenaltyBall"></div>
+              </div>
+              <div class="penaltyReadout">
+                <strong id="flapShotOutcome">READY</strong>
+                <span id="flapShotDetail">Dead-burn to enter the current 17-minute round.</span>
+                <small>Visual goal/save is only animation. Winner is picked by Chainlink VRF.</small>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <details class="detailsBlock penaltyConfigBlock" open>
+          <summary>Penalty Wiring</summary>
+          <div class="detailsBody configGrid">
+            <label class="field">
+              <span>BSC Flap Vault Factory</span>
+              <input readonly value="0xb5Cf9Dc1DA57Dd87EE7Db2962AfDcC143f0AF26C" />
+              <a class="miniLink" href="https://bscscan.com/address/0xb5Cf9Dc1DA57Dd87EE7Db2962AfDcC143f0AF26C" target="_blank" rel="noreferrer">BscScan</a>
+            </label>
+            <label class="field">
+              <span>VRF Subscription</span>
+              <input readonly value="30724563043082722396497695814959597692086994674352818468284068607141634353807" />
+              <small>Funded with 0.01 BNB. Add the Flap-created Vault as consumer after launch.</small>
+            </label>
+            <label class="field">
+              <span>Flap Penalty Vault</span>
+              <input id="flapVaultAddress" placeholder="0x..." />
+            </label>
+            <label class="field">
+              <span>777X Token</span>
+              <input id="flapTokenAddress" placeholder="0x... or read from vault" />
+            </label>
+            <button id="flapSaveConfigBtn" type="button">Save Local Config</button>
+          </div>
+        </details>
+      </section>
+
+      <section class="consoleCard mintCard legacyArcade" id="mintPanel">
         <div class="sectionDecal mintDecal" aria-hidden="true"></div>
         <div class="sectionHead">
           <div>
@@ -257,7 +419,7 @@
         </section>
       </section>
 
-      <section class="gameGrid">
+      <section class="gameGrid legacyArcade">
         <section class="consoleCard gameCard">
           <div class="sectionDecal signalDecal" aria-hidden="true"></div>
           <div class="sectionHead">
@@ -411,7 +573,7 @@
         </section>
       </section>
 
-      <section class="infoGrid">
+      <section class="infoGrid legacyArcade">
         <article class="infoCard">
           <img class="infoDecal" src="./assets/casino-playbig.jpg" alt="" aria-hidden="true" />
           <span>Trade tax</span>
@@ -453,7 +615,7 @@
         </article>
       </section>
 
-      <section class="consoleCard" id="lpPanel">
+      <section class="consoleCard legacyArcade" id="lpPanel">
         <div class="sectionHead">
           <div>
             <span class="sectionKicker">4 / Community LP</span>
@@ -515,7 +677,7 @@
         </div>
       </section>
 
-      <details class="detailsBlock">
+      <details class="detailsBlock legacyArcade">
         <summary>Arcade Wiring</summary>
         <div class="detailsBody configGrid">
           <label class="field">
@@ -538,7 +700,7 @@
         </div>
       </details>
 
-      <details class="detailsBlock creditBlock">
+      <details class="detailsBlock creditBlock legacyArcade">
         <summary>Image Credits</summary>
         <div class="detailsBody creditList">
           <a href="https://commons.wikimedia.org/wiki/File:Cristiano_Ronaldo_2018_(cropped).jpg" target="_blank" rel="noopener noreferrer">Cristiano Ronaldo</a>
@@ -551,6 +713,6 @@
     </main>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="./app.js?v=20260518-api1-mainnet"></script>
+    <script src="./flap-penalty.js?v=20260525-flap-penalty"></script>
   </body>
 </html>

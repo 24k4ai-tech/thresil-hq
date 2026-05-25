@@ -194,6 +194,25 @@ input {
   color: var(--muted);
 }
 
+.field small {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.miniLink {
+  color: var(--gold);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  text-decoration: none;
+}
+
+.miniLink:hover,
+.miniLink:focus-visible {
+  color: var(--text);
+}
+
 .page {
   padding: 22px 0 56px;
 }
@@ -787,6 +806,34 @@ input {
 .compactText {
   max-width: 58ch;
   font-size: 14px;
+}
+
+.legacyArcade {
+  display: none !important;
+}
+
+.flapPenaltyCard {
+  scroll-margin-top: 24px;
+}
+
+.penaltyMainGrid {
+  margin-top: 18px;
+  align-items: start;
+}
+
+.compactPenaltyStage {
+  min-height: 500px;
+  margin-bottom: 0;
+}
+
+.compactPenaltyStage .goalBox {
+  margin-top: 206px;
+}
+
+.penaltyConfigBlock {
+  box-shadow: none;
+  margin-top: 18px;
+  background: rgba(18, 10, 11, 0.66);
 }
 
 .heroBand::before {
@@ -1553,6 +1600,14 @@ input {
 
   .penaltyStage {
     min-height: 730px;
+  }
+
+  .compactPenaltyStage {
+    min-height: 660px;
+  }
+
+  .compactPenaltyStage .goalBox {
+    margin-top: 256px;
   }
 
   .runnerA {

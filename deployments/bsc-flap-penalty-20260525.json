@@ -1,0 +1,29 @@
+{
+  "chainId": 56,
+  "network": "BNB Smart Chain Mainnet",
+  "deployer": "0xB71Eef614Ee8619Ea14735BA39187dc847b49E63",
+  "devWallet": "0x830EE35dC25Bfc3b9E93470c7BE1d4929F888355",
+  "vrf": {
+    "coordinator": "0xd691f04bc0C9a24Edb78af9E005Cf85768F694C9",
+    "subscriptionId": "30724563043082722396497695814959597692086994674352818468284068607141634353807",
+    "keyHash": "0xeb0f72532fed5c94b4caf7b49caf454b35a729608a441101b9269efb7efe2c6c",
+    "callbackGasLimit": 240000,
+    "requestConfirmations": 3,
+    "nativeTopUpAmountWei": "1000000000000000",
+    "initialNativeFundingWei": "10000000000000000"
+  },
+  "contracts": {
+    "Oracle777FlapPenaltyVaultFactory": "0xb5Cf9Dc1DA57Dd87EE7Db2962AfDcC143f0AF26C"
+  },
+  "transactions": {
+    "createVrfSubscription": "0x5bf62f9f4bb28768c3b51972e4973931d315cd2008cc5a36985a5c2bcde62c19",
+    "fundVrfSubscription": "0x458fda82db16e79913fb51b026bc6788ec924fabf8e1dae7dd443a2a036dbbcf",
+    "deployFactory": "0xc7ce29ffa656aad5f3f6812ef5544bcd5b157f82db381dc27d09e2deb7c22751"
+  },
+  "verification": {
+    "sourcify": "exact_match",
+    "sourcifyJobId": "f898d058-afe1-4fc7-b1df-27e9ed2d337d",
+    "bscscan": "not_submitted_no_api_key"
+  },
+  "nextStep": "After Flap creates the concrete Vault, set FLAP_PENALTY_VAULT and run AddOracle777VrfConsumer."
+}

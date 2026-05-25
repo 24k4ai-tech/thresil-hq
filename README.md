@@ -51,7 +51,60 @@ Current build focus:
 - `src/FTMonsterArcadeLauncher.sol` keeps the mint rail first and drives a 17 ETH gross SATO-style reserve curve.
 - `src/FTMonsterLastBuyerPot.sol` pays the last qualifying buyer when the timer expires and the next onchain touch settles.
 - `src/FTMonsterPenaltyDraw.sol` burns 777X for weighted draw entries, locks a future block seed after the round ends, and pays 30% of the armed pot.
+- `src/Oracle777FlapPenaltyVault.sol` is the Flap-focused version: Flap launches the token, the custom vault receives BNB tax, users voluntarily send 777X to the dead address to shoot, and each settled 17-minute round requests Chainlink VRF before paying 30% of the available pot.
 - `web/` contains the live `777x.space` homepage and the How To Play page.
+
+## Flap Penalty Mode
+
+The new Flap route does not deploy the token from this repository. Create the token on Flap, then use the deployed `Oracle777FlapPenaltyVaultFactory` as the custom vault factory.
+
+BSC deployment:
+
+- Network: BNB Smart Chain mainnet, chain id `56`
+- Deployer: `0xB71Eef614Ee8619Ea14735BA39187dc847b49E63`
+- Factory: `0xb5Cf9Dc1DA57Dd87EE7Db2962AfDcC143f0AF26C`
+- Factory deploy tx: `0xc7ce29ffa656aad5f3f6812ef5544bcd5b157f82db381dc27d09e2deb7c22751`
+- VRF coordinator: `0xd691f04bc0C9a24Edb78af9E005Cf85768F694C9`
+- VRF subscription id: `30724563043082722396497695814959597692086994674352818468284068607141634353807`
+- VRF key hash: `0xeb0f72532fed5c94b4caf7b49caf454b35a729608a441101b9269efb7efe2c6c`
+- VRF subscription native funding tx: `0x458fda82db16e79913fb51b026bc6788ec924fabf8e1dae7dd443a2a036dbbcf`
+- Factory source: Sourcify exact match. BscScan API verification is not submitted because no BscScan/Etherscan API key is configured locally.
+
+Target mechanics:
+
+- Flap token tax target: 3% buy / 3% sell.
+- First 77 minutes: one third of vault inflow goes to the dev/API wallet.
+- After 77 minutes: dev/API share ends automatically; new vault inflow remains in the penalty pot.
+- Users voluntarily call `shoot(uint256)` to transfer 777X to `0x000000000000000000000000000000000000dEaD`.
+- Each round lasts 17 minutes.
+- Each settled round requests Chainlink VRF and pays 30% of the available BNB pot.
+- `poke()` and incoming BNB tax can request VRF for a ready round; the VRF callback pays normal winners automatically.
+- The created Vault must be added as a consumer on the configured Chainlink VRF v2.5 subscription.
+- A Vault cannot be created without nonzero VRF coordinator, subscription id, and key hash. This avoids deploying a game that can accept shots but never settle.
+
+Create a VRF subscription by wallet transaction, if one does not already exist:
+
+```powershell
+$env:VRF_COORDINATOR="<bnb_chainlink_vrf_v2_5_coordinator>"
+$env:VRF_INITIAL_FUNDING="0"
+forge script script/CreateOracle777VrfSubscription.s.sol:CreateOracle777VrfSubscription --rpc-url $env:BNB_RPC_URL --broadcast
+```
+
+Deploy factory:
+
+```powershell
+$env:VRF_COORDINATOR="<bnb_chainlink_vrf_v2_5_coordinator>"
+$env:VRF_SUB_ID="<subscription_id>"
+$env:VRF_KEY_HASH="<gas_lane_key_hash>"
+forge script script/DeployOracle777FlapPenaltyVaultFactory.s.sol:DeployOracle777FlapPenaltyVaultFactory --rpc-url $env:BNB_RPC_URL --broadcast
+```
+
+After Flap creates the concrete Vault, add that Vault as a VRF consumer:
+
+```powershell
+$env:FLAP_PENALTY_VAULT="<vault_created_by_flap>"
+forge script script/AddOracle777VrfConsumer.s.sol:AddOracle777VrfConsumer --rpc-url $env:BNB_RPC_URL --broadcast
+```
 
 ## Verification Status
 
