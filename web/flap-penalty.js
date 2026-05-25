@@ -131,11 +131,11 @@ function saveConfig() {
     token: cleanAddress(el.flapTokenAddress?.value),
   };
   localStorage.setItem(CONFIG_KEY, JSON.stringify(currentConfig));
-  showToast("Local Flap penalty config saved.");
+  showToast("本地配置已保存。");
 }
 
 async function connectWallet() {
-  if (!window.ethereum) throw new Error("No injected wallet found.");
+  if (!window.ethereum) throw new Error("未检测到钱包。");
   browserProvider = new ethers.BrowserProvider(window.ethereum);
   await browserProvider.send("eth_requestAccounts", []);
   signer = await browserProvider.getSigner();
@@ -150,8 +150,8 @@ async function connectWallet() {
     chainId = Number((await browserProvider.getNetwork()).chainId);
   }
   el.networkStatus.textContent =
-    chainId === BNB_CHAIN_ID ? `${short(account)} on BNB Chain` : `${short(account)} on chain ${chainId}`;
-  el.connectBtn.textContent = "Wallet Connected";
+    chainId === BNB_CHAIN_ID ? `${short(account)} 已连接 BNB Chain` : `${short(account)} 已连接链 ${chainId}`;
+  el.connectBtn.textContent = "钱包已连接";
   bindWalletEvents();
   await refreshLiveState({ force: true });
 }
@@ -188,8 +188,8 @@ function onAccountsChanged(accounts) {
   account = accounts?.[0] || "";
   if (!account) {
     signer = undefined;
-    el.networkStatus.textContent = "Read mode";
-    el.connectBtn.textContent = "Connect Wallet";
+    el.networkStatus.textContent = "只读模式";
+    el.connectBtn.textContent = "连接钱包";
   }
   refreshLiveState({ force: true }).catch((error) => showToast(humanError(error)));
 }
@@ -210,7 +210,7 @@ async function getReadProvider() {
       lastError = error;
     }
   }
-  throw lastError || new Error("No BNB Chain RPC available.");
+  throw lastError || new Error("当前无法连接 BNB Chain RPC。");
 }
 
 async function refreshLiveState({ quiet = false, force = false } = {}) {
@@ -251,7 +251,7 @@ async function refresh() {
     el.flapTokenAddress.value = tokenAddress;
   }
   if (!isAddress(tokenAddress)) {
-    setPendingState("Set token address or deploy a vault that exposes taxToken.");
+    setPendingState("请填写代币地址，或使用可读取 taxToken 的金库。");
     return;
   }
 
@@ -305,22 +305,22 @@ async function refresh() {
   cachedRoundEndsAt = roundEndsAt;
   cachedVrfRequestId = vrfRequestId;
 
-  el.protocolStatus.textContent = "Flap penalty mode";
+  el.protocolStatus.textContent = "点球模式运行中";
   el.feeStatus.textContent = formatTaxStatus(earlyDevShareBps, launchTimestamp, devWindow, vrfConfigured, totalVrfFunded);
   el.flapTokenSymbol.textContent = tokenSymbol;
   el.flapPot.textContent = `${formatBnb(pot)} BNB`;
   el.flapPayoutQuote.textContent =
-    pendingPayout > 0n ? `Armed: ${formatBnb(pendingPayout)} BNB` : `${formatBnb(payoutQuote)} BNB`;
+    pendingPayout > 0n ? `待发放 ${formatBnb(pendingPayout)} BNB` : `${formatBnb(payoutQuote)} BNB`;
   el.flapRound.textContent = round.toString();
   el.flapEntries.textContent = entries.toString();
   el.flapWeight.textContent = formatWeight(weight);
   el.flapLastWinner.textContent = short(lastWinner);
   el.flapLastPayout.textContent = `${formatBnb(lastPayout)} BNB`;
-  el.flapMyBalance.textContent = account ? `${formatToken(myBalance)} ${tokenSymbol}` : "Connect wallet";
-  el.flapAllowance.textContent = account ? `${formatToken(allowance)} ${tokenSymbol}` : "Connect wallet";
-  el.flapBoost.textContent = account ? formatBps(boostBps) : "Connect wallet";
+  el.flapMyBalance.textContent = account ? `${formatToken(myBalance)} ${tokenSymbol}` : "请先连接钱包";
+  el.flapAllowance.textContent = account ? `${formatToken(allowance)} ${tokenSymbol}` : "请先连接钱包";
+  el.flapBoost.textContent = account ? formatBps(boostBps) : "请先连接钱包";
 
-  const deadBurnNote = `Total dead-burned: ${formatToken(totalDeadBurned)} ${tokenSymbol}`;
+  const deadBurnNote = `已打入黑洞：${formatToken(totalDeadBurned)} ${tokenSymbol}`;
   if (el.flapShotDetail && !el.flapPenaltyStage?.classList.contains("shooting")) {
     el.flapShotDetail.textContent = deadBurnNote;
   }
@@ -342,40 +342,40 @@ function updateBurnSelection() {
 }
 
 async function approveBurn() {
-  if (!signer) throw new Error("Connect wallet first.");
+  if (!signer) throw new Error("请先连接钱包。");
   const vaultAddress = cleanAddress(el.flapVaultAddress?.value);
   const tokenAddress = cleanAddress(el.flapTokenAddress?.value);
   updateBurnSelection();
   if (!isAddress(vaultAddress) || !isAddress(tokenAddress) || selectedBurnRaw <= 0n) {
-    throw new Error("Set vault, token, and burn amount first.");
+    throw new Error("请先填好金库、代币和烧币数量。");
   }
   const token = new ethers.Contract(tokenAddress, TOKEN_ABI, signer);
   const tx = await token.approve(vaultAddress, selectedBurnRaw);
-  showToast(`Approve sent: ${tx.hash}`);
+  showToast(`授权已发出：${tx.hash}`);
   await tx.wait();
   await refreshLiveState({ force: true });
 }
 
 async function shootPenalty() {
-  if (!signer) throw new Error("Connect wallet first.");
+  if (!signer) throw new Error("请先连接钱包。");
   const vaultAddress = cleanAddress(el.flapVaultAddress?.value);
   updateBurnSelection();
-  if (!isAddress(vaultAddress) || selectedBurnRaw <= 0n) throw new Error("Enter a valid burn amount.");
+  if (!isAddress(vaultAddress) || selectedBurnRaw <= 0n) throw new Error("请输入有效的烧币数量。");
   playPenaltyShot();
   const vault = new ethers.Contract(vaultAddress, VAULT_ABI, signer);
   const tx = await vault.shoot(selectedBurnRaw);
-  showToast(`Penalty burn sent: ${tx.hash}`);
+  showToast(`烧币射门已发出：${tx.hash}`);
   await tx.wait();
   await refreshLiveState({ force: true });
 }
 
 async function pokeSettlement() {
-  if (!signer) throw new Error("Connect wallet first.");
+  if (!signer) throw new Error("请先连接钱包。");
   const vaultAddress = cleanAddress(el.flapVaultAddress?.value);
-  if (!isAddress(vaultAddress)) throw new Error("Set vault first.");
+  if (!isAddress(vaultAddress)) throw new Error("请先填写金库地址。");
   const vault = new ethers.Contract(vaultAddress, VAULT_ABI, signer);
   const tx = await vault.poke();
-  showToast(`Poke sent: ${tx.hash}`);
+  showToast(`结算触发已发出：${tx.hash}`);
   await tx.wait();
   await refreshLiveState({ force: true });
 }
@@ -384,10 +384,10 @@ function updateCountdowns() {
   const now = Math.floor(Date.now() / 1000);
   if (!el.flapCountdown) return;
   if (cachedVrfRequestId > 0n) {
-    el.flapCountdown.textContent = `VRF pending #${cachedVrfRequestId.toString()}`;
+    el.flapCountdown.textContent = `随机数处理中 #${cachedVrfRequestId.toString()}`;
     return;
   }
-  el.flapCountdown.textContent = cachedRoundEndsAt > 0n ? formatCountdown(Number(cachedRoundEndsAt) - now) : "Waiting";
+  el.flapCountdown.textContent = cachedRoundEndsAt > 0n ? formatCountdown(Number(cachedRoundEndsAt) - now) : "等待中";
 }
 
 function syncPenaltyScene(seed = 0n) {
@@ -415,8 +415,8 @@ function playPenaltyShot() {
   el.flapGoalKeeper.dataset.side = keeperSide;
   el.flapPenaltyBall.dataset.path = ballPath;
   el.flapPenaltyStage.classList.add("shooting", "chaseBurst", goal ? "goal" : "save");
-  el.flapShotOutcome.textContent = goal ? `${star.name} GOAL LOOK` : `${star.name} SAVE LOOK`;
-  el.flapShotDetail.textContent = `${star.tag}: animation only. Onchain settlement picks the actual winner later.`;
+  el.flapShotOutcome.textContent = goal ? `${star.name} 射门动画` : `${star.name} 扑救动画`;
+  el.flapShotDetail.textContent = `${star.tag}：这只是展示动画，真正中奖结果以后面的链上结算为准。`;
 }
 
 function setPenaltyStar(index) {
@@ -428,8 +428,8 @@ function setPenaltyStar(index) {
   return star;
 }
 
-function setPendingState(message = "Set Flap vault to read chain") {
-  el.protocolStatus.textContent = "Awaiting Flap vault";
+function setPendingState(message = "先填写 Flap 金库地址") {
+  el.protocolStatus.textContent = "等待金库地址";
   el.feeStatus.textContent = message;
   [
     "flapPot",
@@ -456,9 +456,9 @@ function formatTaxStatus(earlyDevShareBps, launchTimestamp, devWindow, vrfConfig
   const earlyShare = formatBps(earlyDevShareBps);
   const end = Number(launchTimestamp + devWindow);
   const left = end - Math.floor(Date.now() / 1000);
-  const devStatus = left > 0 ? `early dev share ${earlyShare} of vault inflow, ${formatCountdown(left)} left` : "early dev share ended";
-  const vrfStatus = vrfConfigured ? `VRF on; funded ${formatBnb(totalVrfFunded)} BNB` : "VRF not configured";
-  return `Flap target tax: 3% buy / 3% sell. Vault pays 30% pot per round; ${devStatus}; ${vrfStatus}.`;
+  const devStatus = left > 0 ? `前期 dev 分成 ${earlyShare}，剩余 ${formatCountdown(left)}` : "前期 dev 分成已结束";
+  const vrfStatus = vrfConfigured ? `随机数已配置，当前已注入 ${formatBnb(totalVrfFunded)} BNB` : "随机数尚未配置";
+  return `目标税率：买 3%，卖 3%。每轮派奖 30%。${devStatus}。${vrfStatus}。`;
 }
 
 function percentToAmount(balance, percent) {
@@ -504,12 +504,12 @@ function formatBps(bps) {
 }
 
 function formatCountdown(seconds) {
-  if (seconds <= 0) return "Ready / next touch";
+  if (seconds <= 0) return "已到结算时间";
   const h = Math.floor(seconds / 3600);
   const m = Math.floor((seconds % 3600) / 60);
   const s = seconds % 60;
-  if (h > 0) return `${h}h ${m}m ${s}s`;
-  return `${m}m ${s}s`;
+  if (h > 0) return `${h}小时 ${m}分 ${s}秒`;
+  return `${m}分 ${s}秒`;
 }
 
 function cleanAddress(value) {
@@ -535,7 +535,7 @@ function humanError(error) {
     error?.reason ||
     error?.info?.error?.message ||
     error?.message ||
-    "Unknown error.";
+    "未知错误。";
   return message.replace(/^execution reverted: /i, "");
 }
 

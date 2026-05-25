@@ -29,7 +29,12 @@ body {
     radial-gradient(circle at 50% 100%, rgba(118, 12, 30, 0.22), transparent 30%),
     linear-gradient(180deg, #0d0305 0%, #21070c 52%, #110608 100%);
   color: var(--text);
-  font-family: "Inter", sans-serif;
+  font-family:
+    "PingFang SC",
+    "Microsoft YaHei",
+    "Noto Sans SC",
+    "Inter",
+    sans-serif;
 }
 
 body {
