@@ -92,7 +92,7 @@
           </div>
           <div class="heroMetaRow">
             <span>区块 <strong id="blockNumber">-</strong></span>
-            <span id="feeStatus">先填金库地址，再读取链上数据</span>
+            <span id="feeStatus">正在读取链上金库数据</span>
           </div>
         </div>
       </section>
@@ -225,7 +225,7 @@
               </div>
               <div class="penaltyReadout">
                 <strong id="flapShotOutcome">准备中</strong>
-                <span id="flapShotDetail">先填好金库地址和代币地址，再参与本轮点球。</span>
+                <span id="flapShotDetail">正在读取点球金库，稍后可参与本轮点球。</span>
                 <small>进球和扑救动画只负责展示，真正的中奖结果以链上随机数为准。</small>
               </div>
             </div>
@@ -243,11 +243,11 @@
             <label class="field">
               <span>VRF 订阅</span>
               <input readonly value="30724563043082722396497695814959597692086994674352818468284068607141634353807" />
-              <small>当前已放入 0.01 BNB。Flap 创建出新金库后，要把该金库加成 consumer。</small>
+              <small>当前金库已接入 777X 点球模式。</small>
             </label>
             <label class="field">
               <span>点球金库地址</span>
-              <input id="flapVaultAddress" placeholder="0x..." />
+              <input id="flapVaultAddress" placeholder="0x703f...B446" />
             </label>
             <label class="field">
               <span>777X 代币地址</span>
@@ -710,6 +710,6 @@
     </main>
 
     <div id="toast" class="toast" role="status" aria-live="polite"></div>
-    <script src="./flap-penalty.js?v=20260525-flap-penalty"></script>
+    <script src="./flap-penalty.js?v=20260526-live-vault"></script>
   </body>
 </html>

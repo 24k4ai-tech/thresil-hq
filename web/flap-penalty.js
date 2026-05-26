@@ -9,14 +9,16 @@ const RPC_URLS = [
   "https://bsc-dataseed2.bnbchain.org",
 ];
 const FACTORY_ADDRESS = "0x16Aa0e4257C9aB1f443A03BF647397AA8b58E55d";
+const FACTORY_DEPLOY_BLOCK = 100501358;
 const PRESET_TOKEN_ADDRESS = "0xE8c7C96E8D2770E34187f65EbBd43214Ec1f7777";
+const PRESET_VAULT_ADDRESS = "0x703fe853e88a3A877EcF6EB7Cb65C60B11c4B446";
 const VAULT_CREATED_TOPIC = ethers.id("VaultCreated(address,address,address,address)");
 const COUNTDOWN_REFRESH_MS = 1000;
 const CHAIN_REFRESH_MS = 12000;
 const WAD = 10n ** 18n;
 
 const DEFAULT_CONFIG = {
-  vault: "",
+  vault: PRESET_VAULT_ADDRESS,
   token: PRESET_TOKEN_ADDRESS,
 };
 
@@ -251,7 +253,7 @@ async function refresh() {
   if (!isAddress(vaultAddress)) {
     if (isAddress(tokenAddress)) {
       if (el.flapTokenAddress && !isAddress(el.flapTokenAddress.value)) el.flapTokenAddress.value = tokenAddress;
-      setPendingState("代币地址已预设，等待 Flap 发射并生成专属金库。");
+      setPendingState("代币已上线，正在同步 Flap 专属金库。");
       return;
     }
     setPendingState();
@@ -347,14 +349,21 @@ async function refresh() {
 }
 
 async function resolveVaultAddress(provider, tokenAddress) {
-  const logs = await provider.getLogs({
-    address: FACTORY_ADDRESS,
-    fromBlock: 0,
-    toBlock: "latest",
-    topics: [VAULT_CREATED_TOPIC, ethers.zeroPadValue(tokenAddress, 32)],
-  });
+  const latest = await provider.getBlockNumber();
+  const logs = [];
+  for (let fromBlock = FACTORY_DEPLOY_BLOCK; fromBlock <= latest; fromBlock += 1500) {
+    const toBlock = Math.min(fromBlock + 1499, latest);
+    const chunk = await provider.getLogs({
+      address: FACTORY_ADDRESS,
+      fromBlock,
+      toBlock,
+      topics: [VAULT_CREATED_TOPIC, ethers.zeroPadValue(tokenAddress, 32)],
+    });
+    logs.push(...chunk);
+  }
   if (!logs.length) return "";
-  return ethers.getAddress(ethers.dataSlice(logs[logs.length - 1].topics[3], 12));
+  const decoded = ethers.AbiCoder.defaultAbiCoder().decode(["address", "address"], logs[logs.length - 1].data);
+  return ethers.getAddress(decoded[0]);
 }
 
 function updateBurnSelection() {
@@ -455,8 +464,8 @@ function setPenaltyStar(index) {
   return star;
 }
 
-function setPendingState(message = "先填写 Flap 金库地址") {
-  el.protocolStatus.textContent = "等待金库地址";
+function setPendingState(message = "正在同步 Flap 专属金库") {
+  el.protocolStatus.textContent = "金库同步中";
   el.feeStatus.textContent = message;
   [
     "flapPot",
