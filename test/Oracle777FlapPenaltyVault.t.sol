@@ -17,6 +17,7 @@ contract Oracle777FlapPenaltyVaultTest is Test {
     MockVRFCoordinator internal vrf;
     Oracle777FlapPenaltyVault internal vault;
     Oracle777FlapPenaltyVaultFactory internal factory;
+    RejectEtherReceiver internal rejector;
 
     address internal dev = address(0xD00D);
     address internal creator = address(0xC0FFEE);
@@ -36,8 +37,10 @@ contract Oracle777FlapPenaltyVaultTest is Test {
         });
         vault = new Oracle777FlapPenaltyVault(IOracle777FlapERC20(address(token)), dev, creator, config);
         factory = new Oracle777FlapPenaltyVaultFactory(dev, config);
+        rejector = new RejectEtherReceiver(token, vault);
         token.mint(alice, 1_000_000 ether);
         token.mint(bob, 1_000_000 ether);
+        token.mint(address(rejector), 1_000_000 ether);
     }
 
     function testReceivesTaxAndRoutesEarlyDevShare() public {
@@ -77,6 +80,31 @@ contract Oracle777FlapPenaltyVaultTest is Test {
         assertEq(weight, 100_000_000_000);
         assertEq(vault.currentRoundWeight(), 100_000_000_000);
         assertEq(vault.firstShotAt(alice), block.timestamp);
+    }
+
+    function testShootDoesNotChargeNativeValueBeyondGas() public {
+        vm.deal(alice, 5 ether);
+
+        vm.startPrank(alice);
+        token.approve(address(vault), 10_000 ether);
+        uint256 nativeBefore = alice.balance;
+        vault.shoot(10_000 ether);
+        vm.stopPrank();
+
+        assertEq(alice.balance, nativeBefore);
+        assertEq(address(vault).balance, 0);
+    }
+
+    function testShootRejectsAttachedNativeValue() public {
+        vm.deal(alice, 1 ether);
+        vm.prank(alice);
+        token.approve(address(vault), 1 ether);
+
+        vm.prank(alice);
+        (bool ok,) = address(vault).call{value: 0.1 ether}(abi.encodeWithSelector(vault.shoot.selector, 1 ether));
+        assertFalse(ok);
+        assertEq(address(vault).balance, 0);
+        assertEq(token.balanceOf(vault.DEAD_ADDRESS()), 0);
     }
 
     function testRoundPaysThirtyPercentAfterSeedTouch() public {
@@ -143,6 +171,65 @@ contract Oracle777FlapPenaltyVaultTest is Test {
         (, uint256 secondWeight,) = vault.roundEntry(1, 0);
         assertEq(secondWeight, 125_000_000_000);
         assertEq(vault.shooterAgeBoostBps(alice), 2_500);
+    }
+
+    function testReservedPayoutDoesNotBlockNextRound() public {
+        vm.deal(address(this), 30 ether);
+        vm.warp(block.timestamp + 77 minutes);
+        (bool ok,) = address(vault).call{value: 10 ether}("");
+        assertTrue(ok);
+
+        uint256 activeRound = vault.round();
+        rejector.approveVault(type(uint256).max);
+        rejector.shoot(10_000 ether);
+
+        vm.warp(block.timestamp + 17 minutes + 1);
+        vault.poke();
+        vrf.fulfill(address(vault), 1, 123);
+
+        uint256 reserved = vault.pendingPayout(address(rejector));
+        assertEq(reserved, 2.997 ether);
+        assertEq(vault.reservedFailedPayouts(), 2.997 ether);
+        assertEq(vault.pendingVrfRequestId(), 0);
+        assertEq(vault.round(), activeRound + 1);
+
+        vm.startPrank(alice);
+        token.approve(address(vault), 10_000 ether);
+        vault.shoot(10_000 ether);
+        vm.stopPrank();
+
+        vm.warp(block.timestamp + 17 minutes + 1);
+        vault.poke();
+        uint256 requestId = vault.pendingVrfRequestId();
+        assertGt(requestId, 0);
+        vrf.fulfill(address(vault), requestId, 456);
+
+        assertEq(vault.lastWinner(), alice);
+        assertEq(vault.pendingPayout(address(rejector)), reserved);
+    }
+
+    function testVrfRequestFailureCanRecoverOnLaterPoke() public {
+        vm.startPrank(alice);
+        token.approve(address(vault), 10_000 ether);
+        vault.shoot(10_000 ether);
+        vm.stopPrank();
+
+        vm.deal(address(this), 5 ether);
+        (bool ok,) = address(vault).call{value: 5 ether}("");
+        assertTrue(ok);
+
+        vrf.setFailRequests(true);
+        vm.warp(block.timestamp + 17 minutes + 1);
+        uint256 activeRound = vault.round();
+        (bool settled,,) = vault.poke();
+        assertFalse(settled);
+        assertEq(vault.pendingVrfRequestId(), 0);
+        assertEq(vault.round(), activeRound);
+
+        vrf.setFailRequests(false);
+        vault.poke();
+        assertEq(vault.pendingVrfRequestId(), 1);
+        assertEq(vault.round(), activeRound + 1);
     }
 
     function testFactoryCreatesNativeQuoteVault() public {
@@ -269,5 +356,27 @@ contract MockVRFCoordinator {
         uint256[] memory words = new uint256[](1);
         words[0] = randomWord;
         Oracle777FlapPenaltyVault(payable(consumer)).rawFulfillRandomWords(requestId, words);
+    }
+}
+
+contract RejectEtherReceiver {
+    MockERC20 internal immutable token;
+    Oracle777FlapPenaltyVault internal immutable vault;
+
+    constructor(MockERC20 token_, Oracle777FlapPenaltyVault vault_) {
+        token = token_;
+        vault = vault_;
+    }
+
+    function approveVault(uint256 amount) external {
+        token.approve(address(vault), amount);
+    }
+
+    function shoot(uint256 amount) external {
+        vault.shoot(amount);
+    }
+
+    receive() external payable {
+        revert("NO_ETH");
     }
 }

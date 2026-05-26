@@ -8,13 +8,16 @@ const RPC_URLS = [
   "https://bsc-dataseed1.bnbchain.org",
   "https://bsc-dataseed2.bnbchain.org",
 ];
+const FACTORY_ADDRESS = "0xb5Cf9Dc1DA57Dd87EE7Db2962AfDcC143f0AF26C";
+const PRESET_TOKEN_ADDRESS = "0xE8c7C96E8D2770E34187f65EbBd43214Ec1f7777";
+const VAULT_CREATED_TOPIC = ethers.id("VaultCreated(address,address,address,address)");
 const COUNTDOWN_REFRESH_MS = 1000;
 const CHAIN_REFRESH_MS = 12000;
 const WAD = 10n ** 18n;
 
 const DEFAULT_CONFIG = {
   vault: "",
-  token: "",
+  token: PRESET_TOKEN_ADDRESS,
 };
 
 const TOKEN_ABI = [
@@ -235,15 +238,28 @@ async function refresh() {
   readBlock = BigInt(await provider.getBlockNumber());
   el.blockNumber.textContent = readBlock.toString();
 
-  const vaultAddress = cleanAddress(el.flapVaultAddress?.value) || currentConfig.vault;
+  let tokenAddress = cleanAddress(el.flapTokenAddress?.value) || currentConfig.token || PRESET_TOKEN_ADDRESS;
+  let vaultAddress = cleanAddress(el.flapVaultAddress?.value) || currentConfig.vault;
+  if (!isAddress(vaultAddress) && isAddress(tokenAddress)) {
+    vaultAddress = await resolveVaultAddress(provider, tokenAddress);
+    if (isAddress(vaultAddress)) {
+      currentConfig.vault = vaultAddress;
+      if (el.flapVaultAddress) el.flapVaultAddress.value = vaultAddress;
+      localStorage.setItem(CONFIG_KEY, JSON.stringify(currentConfig));
+    }
+  }
   if (!isAddress(vaultAddress)) {
+    if (isAddress(tokenAddress)) {
+      if (el.flapTokenAddress && !isAddress(el.flapTokenAddress.value)) el.flapTokenAddress.value = tokenAddress;
+      setPendingState("代币地址已预设，等待 Flap 发射并生成专属金库。");
+      return;
+    }
     setPendingState();
     return;
   }
   if (el.flapVaultAddress && !isAddress(el.flapVaultAddress.value)) el.flapVaultAddress.value = vaultAddress;
 
   const vault = new ethers.Contract(vaultAddress, VAULT_ABI, provider);
-  let tokenAddress = cleanAddress(el.flapTokenAddress?.value) || currentConfig.token;
   if (!isAddress(tokenAddress)) {
     tokenAddress = await vault.taxTokenAddress().catch(() => vault.taxToken());
   }
@@ -328,6 +344,17 @@ async function refresh() {
   updateBurnSelection();
   updateCountdowns();
   syncPenaltyScene(entries);
+}
+
+async function resolveVaultAddress(provider, tokenAddress) {
+  const logs = await provider.getLogs({
+    address: FACTORY_ADDRESS,
+    fromBlock: 0,
+    toBlock: "latest",
+    topics: [VAULT_CREATED_TOPIC, ethers.zeroPadValue(tokenAddress, 32)],
+  });
+  if (!logs.length) return "";
+  return ethers.getAddress(ethers.dataSlice(logs[logs.length - 1].topics[3], 12));
 }
 
 function updateBurnSelection() {
