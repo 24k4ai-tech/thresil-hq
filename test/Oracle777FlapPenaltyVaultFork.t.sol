@@ -11,10 +11,11 @@ import {
 } from "../src/Oracle777FlapPenaltyVault.sol";
 
 contract Oracle777FlapPenaltyVaultForkTest is Test {
-    address internal constant DEPLOYED_FACTORY = 0xb5Cf9Dc1DA57Dd87EE7Db2962AfDcC143f0AF26C;
+    address internal constant DEPLOYED_FACTORY = 0x16Aa0e4257C9aB1f443A03BF647397AA8b58E55d;
     address internal constant DEPLOYED_DEV_WALLET = 0x830EE35dC25Bfc3b9E93470c7BE1d4929F888355;
     string internal constant DEFAULT_BSC_RPC = "https://bsc-dataseed.binance.org";
 
+    Oracle777FlapPenaltyVaultFactory internal deployedFactory;
     Oracle777FlapPenaltyVaultFactory internal factory;
     ForkMockERC20 internal token;
     ForkMockVRFCoordinator internal vrf;
@@ -29,7 +30,7 @@ contract Oracle777FlapPenaltyVaultForkTest is Test {
         vm.createSelectFork(rpc);
         vm.txGasPrice(0);
 
-        factory = Oracle777FlapPenaltyVaultFactory(DEPLOYED_FACTORY);
+        deployedFactory = Oracle777FlapPenaltyVaultFactory(DEPLOYED_FACTORY);
         token = new ForkMockERC20();
         vrf = new ForkMockVRFCoordinator();
 
@@ -42,8 +43,8 @@ contract Oracle777FlapPenaltyVaultForkTest is Test {
             nativeTopUpAmount: 0.001 ether
         });
 
-        address created =
-            factory.newVault(address(token), address(0), creator, abi.encode(DEPLOYED_DEV_WALLET, config));
+        factory = new Oracle777FlapPenaltyVaultFactory(DEPLOYED_DEV_WALLET, config);
+        address created = factory.newVault(address(token), address(0), creator, abi.encode(DEPLOYED_DEV_WALLET));
         vault = Oracle777FlapPenaltyVault(payable(created));
 
         token.mint(alice, 1_000_000 ether);
@@ -51,10 +52,10 @@ contract Oracle777FlapPenaltyVaultForkTest is Test {
     }
 
     function testForkFactoryReadbackMatchesDeployedConfig() public view {
-        assertEq(address(factory), DEPLOYED_FACTORY);
-        assertEq(factory.defaultDevWallet(), DEPLOYED_DEV_WALLET);
-        assertTrue(factory.isQuoteTokenSupported(address(0)));
-        assertFalse(factory.isQuoteTokenSupported(address(1)));
+        assertEq(address(deployedFactory), DEPLOYED_FACTORY);
+        assertEq(deployedFactory.defaultDevWallet(), DEPLOYED_DEV_WALLET);
+        assertTrue(deployedFactory.isQuoteTokenSupported(address(0)));
+        assertFalse(deployedFactory.isQuoteTokenSupported(address(1)));
     }
 
     function testForkRehearsalShootOnlyBurnsTokenAndPaysWinner() public {

@@ -8,7 +8,7 @@ const RPC_URLS = [
   "https://bsc-dataseed1.bnbchain.org",
   "https://bsc-dataseed2.bnbchain.org",
 ];
-const FACTORY_ADDRESS = "0xb5Cf9Dc1DA57Dd87EE7Db2962AfDcC143f0AF26C";
+const FACTORY_ADDRESS = "0x16Aa0e4257C9aB1f443A03BF647397AA8b58E55d";
 const PRESET_TOKEN_ADDRESS = "0xE8c7C96E8D2770E34187f65EbBd43214Ec1f7777";
 const VAULT_CREATED_TOPIC = ethers.id("VaultCreated(address,address,address,address)");
 const COUNTDOWN_REFRESH_MS = 1000;

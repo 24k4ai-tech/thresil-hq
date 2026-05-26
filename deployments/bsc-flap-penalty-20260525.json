@@ -13,12 +13,14 @@
     "initialNativeFundingWei": "10000000000000000"
   },
   "contracts": {
-    "Oracle777FlapPenaltyVaultFactory": "0xb5Cf9Dc1DA57Dd87EE7Db2962AfDcC143f0AF26C"
+    "Oracle777FlapPenaltyVaultFactory": "0x16Aa0e4257C9aB1f443A03BF647397AA8b58E55d",
+    "previousOracle777FlapPenaltyVaultFactory": "0xb5Cf9Dc1DA57Dd87EE7Db2962AfDcC143f0AF26C"
   },
   "transactions": {
     "createVrfSubscription": "0x5bf62f9f4bb28768c3b51972e4973931d315cd2008cc5a36985a5c2bcde62c19",
     "fundVrfSubscription": "0x458fda82db16e79913fb51b026bc6788ec924fabf8e1dae7dd443a2a036dbbcf",
-    "deployFactory": "0xc7ce29ffa656aad5f3f6812ef5544bcd5b157f82db381dc27d09e2deb7c22751"
+    "deployFactory": "0x05e76c8dde084919cf0bae5c50a82df559bfcc3508e87cd159c57224dfd2e6ba",
+    "previousDeployFactory": "0xc7ce29ffa656aad5f3f6812ef5544bcd5b157f82db381dc27d09e2deb7c22751"
   },
   "verification": {
     "sourcify": "exact_match",

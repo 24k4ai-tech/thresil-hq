@@ -242,6 +242,22 @@ contract Oracle777FlapPenaltyVaultTest is Test {
         assertFalse(factory.isQuoteTokenSupported(address(1)));
     }
 
+    function testFactoryAcceptsFlapBytesWrappedAddressData() public {
+        address created = factory.newVault(address(token), address(0), creator, abi.encode(abi.encode(bob)));
+        Oracle777FlapPenaltyVault createdVault = Oracle777FlapPenaltyVault(payable(created));
+
+        assertEq(address(createdVault.taxToken()), address(token));
+        assertEq(createdVault.devWallet(), bob);
+    }
+
+    function testFactoryAcceptsFlapBytesWrappedPackedAddressData() public {
+        address created = factory.newVault(address(token), address(0), creator, abi.encode(abi.encodePacked(bob)));
+        Oracle777FlapPenaltyVault createdVault = Oracle777FlapPenaltyVault(payable(created));
+
+        assertEq(address(createdVault.taxToken()), address(token));
+        assertEq(createdVault.devWallet(), bob);
+    }
+
     function testFlapSchemasDoNotRevert() public view {
         FlapVaultUISchema memory uiSchema = vault.vaultUISchema();
         assertEq(uiSchema.vaultType, "Oracle777PenaltyVault");
@@ -251,7 +267,8 @@ contract Oracle777FlapPenaltyVaultTest is Test {
 
         FlapVaultDataSchema memory dataSchema = factory.vaultDataSchema();
         assertEq(dataSchema.fields.length, 1);
-        assertEq(dataSchema.fields[0].name, "data");
+        assertEq(dataSchema.fields[0].name, "devWallet");
+        assertEq(dataSchema.fields[0].fieldType, "address");
     }
 
     function testShootRevertsWhenEndedRoundCannotRequestVrf() public {

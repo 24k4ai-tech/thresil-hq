@@ -569,17 +569,8 @@ contract Oracle777FlapPenaltyVaultFactory {
     {
         if (taxToken == address(0) || creator == address(0)) revert Oracle777FlapPenaltyVault.ZeroAddress();
         if (quoteToken != address(0)) revert Oracle777FlapPenaltyVault.UnsupportedQuoteToken();
-        address devWallet = defaultDevWallet;
+        address devWallet = _decodeDevWallet(vaultData);
         Oracle777VrfConfig memory vrfConfig = defaultVrfConfig;
-        if (vaultData.length > 0) {
-            if (vaultData.length == 32) {
-                devWallet = abi.decode(vaultData, (address));
-                if (devWallet == address(0)) revert Oracle777FlapPenaltyVault.ZeroAddress();
-            } else {
-                (devWallet, vrfConfig) = abi.decode(vaultData, (address, Oracle777VrfConfig));
-                if (devWallet == address(0)) revert Oracle777FlapPenaltyVault.ZeroAddress();
-            }
-        }
         vault = address(new Oracle777FlapPenaltyVault(IOracle777FlapERC20(taxToken), devWallet, creator, vrfConfig));
         emit VaultCreated(taxToken, creator, vault, devWallet);
     }
@@ -589,9 +580,48 @@ contract Oracle777FlapPenaltyVaultFactory {
     }
 
     function vaultDataSchema() public pure returns (FlapVaultDataSchema memory schema) {
-        schema.description = "ABI data";
+        schema.description = "Dev wallet";
         schema.fields = new FlapFieldDescriptor[](1);
-        schema.fields[0] = FlapFieldDescriptor("data", "bytes", "address or address+vrf", 0);
+        schema.fields[0] = FlapFieldDescriptor("devWallet", "address", "BNB receiver for the temporary dev/API share", 0);
         schema.isArray = false;
+    }
+
+    function _decodeDevWallet(bytes calldata vaultData) internal view returns (address devWallet) {
+        devWallet = defaultDevWallet;
+        if (vaultData.length == 0) return devWallet;
+
+        bytes memory data = _unwrapAbiEncodedBytes(vaultData);
+        if (data.length == 0) return devWallet;
+
+        if (data.length == 20) {
+            devWallet = _addressFromPackedBytes(data);
+        } else if (data.length == 32) {
+            devWallet = abi.decode(data, (address));
+        } else {
+            revert Oracle777FlapPenaltyVault.ZeroAddress();
+        }
+        if (devWallet == address(0)) revert Oracle777FlapPenaltyVault.ZeroAddress();
+    }
+
+    function _unwrapAbiEncodedBytes(bytes calldata data) internal pure returns (bytes memory unwrapped) {
+        if (data.length >= 64) {
+            uint256 offset;
+            uint256 size;
+            assembly {
+                offset := calldataload(data.offset)
+                size := calldataload(add(data.offset, 32))
+            }
+            uint256 paddedSize = ((size + 31) / 32) * 32;
+            if (offset == 32 && data.length == 64 + paddedSize) {
+                return abi.decode(data, (bytes));
+            }
+        }
+        return data;
+    }
+
+    function _addressFromPackedBytes(bytes memory data) internal pure returns (address value) {
+        assembly {
+            value := shr(96, mload(add(data, 32)))
+        }
     }
 }
